@@ -1,0 +1,1571 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="SHArCCfvXfw_nqglhG-0xcYuVh4vZap3KGXfMvJkgv4" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="guide," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/head/dragon-32x32.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="对实验室服务器选型的一些调研。">
+<meta name="keywords" content="guide">
+<meta property="og:type" content="article">
+<meta property="og:title" content="实验室深度学习服务器选型">
+<meta property="og:url" content="http://yoursite.com/2018/03/08/2018-03-08-deep_learning_server_choosing/index.html">
+<meta property="og:site_name" content="龙">
+<meta property="og:description" content="对实验室服务器选型的一些调研。">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/guide/pcie.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/华硕X99-E%20WS.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/X10DRG-Q.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/i7-6850K.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/1080Ti.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/1080Ti%20VS%20K80.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/海盗船复仇者LPX%20DDR4%203000%2032GB.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/金士顿(Kingston)DDR4%202133%2032G%20RECC.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/西部数据(WD)红盘.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/EVGA%20额定1600w%201600T2电源.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/猫头鹰NH-D15.png">
+<meta property="og:image" content="http://yoursite.com/images/guide/海盗船AIR540.png">
+<meta property="og:updated_time" content="2018-03-12T08:47:55.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="实验室深度学习服务器选型">
+<meta name="twitter:description" content="对实验室服务器选型的一些调研。">
+<meta name="twitter:image" content="http://yoursite.com/images/guide/pcie.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/03/08/2018-03-08-deep_learning_server_choosing/"/>
+
+
+
+
+
+  <title>实验室深度学习服务器选型 | 龙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104895670-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5e7e310f93d045726a79eedab4bd21";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">哇咔咔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/03/08/2018-03-08-deep_learning_server_choosing/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="龙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head/head_bigfan.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">实验室深度学习服务器选型</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-03-08T18:48:52+08:00">
+                2018-03-08
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/guide/" itemprop="url" rel="index">
+                    <span itemprop="name">guide</span>
+                  </a>
+                </span>
+
+                
+                
+                  ， 
+                
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/guide/hardware/" itemprop="url" rel="index">
+                    <span itemprop="name">hardware</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/03/08/2018-03-08-deep_learning_server_choosing/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/03/08/2018-03-08-deep_learning_server_choosing/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  对实验室服务器选型的一些调研。
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>这一篇笔记主要是对实验室服务器选型的一些调研。</p>
+<p>当然，其中的很多知识也许在自己以后的装机岁月中会用到。</p>
+<p>（目前忽略AMD，毕竟没有接触过，也不是主流）</p>
+<hr>
+<h2 id="服务器目标"><a href="#服务器目标" class="headerlink" title="服务器目标"></a>服务器目标</h2><p>服务器需要扮演的角色有：</p>
+<ol>
+<li>作为云化环境下的低层资源。</li>
+<li>提供GPU计算能力给深度学习或者其他科学计算。</li>
+</ol>
+<hr>
+<h2 id="硬件列表"><a href="#硬件列表" class="headerlink" title="硬件列表"></a>硬件列表</h2><p>首先，要作为一台PC，它的组成部分至少有，机箱、主板、CPU、内存、硬盘、电源和CPU散热器。</p>
+<p>其次，作为需要提供GPU计算能力的服务器，那么它就需要GPU硬件。</p>
+<ul>
+<li>机箱</li>
+<li>主板</li>
+<li>CPU</li>
+<li>GPU</li>
+<li>内存</li>
+<li>硬盘</li>
+<li>电源</li>
+<li>CPU散热</li>
+</ul>
+<p>下面，一个一个硬件的来记录调研的信息以及一些自己的理解。</p>
+<p>首先可以参考一下<a href="http://timdettmers.com/2015/03/09/deep-learning-hardware-guide/" target="_blank" rel="external">A Full Hardware Guide to Deep Learning-Tim Dettmers</a>，
+其中比较详细的说了各个部分的问题。</p>
+<hr>
+<h2 id="PCIe"><a href="#PCIe" class="headerlink" title="PCIe"></a>PCIe</h2><p>首先，还是需要先了解一下PCIe通道，在主板、CPU、GPU的参数说明中通常会看到它，
+在平常自己攒机的硬件选择时，通常都不用考虑它，因为你不会上多个GPU，但是一旦考虑到要装多个GPU的情景，
+最好还是要了解一下。</p>
+<p>PCI-Express (peripheral component interconnect express)，它是一种高速串行计算机扩展总线标准，
+PCIe属于高速串行点对点双通道高带宽传输，所连接的设备分配独享通道带宽，不共享总线带宽，
+主要支持主动电源管理，错误报告，端对端的可靠性传输，热插拔以及服务质量(QOS)等功能。</p>
+<p>目前一般都是PCIe 3.0，下面的表来自百度百科：</p>
+<table log-set-param="table_view" width="658" data-sort="sortDisabled"><tbody><tr><td width="101" align="center" valign="top" colspan="1" rowspan="2">PCI Express 版本</td><td width="70" align="center" valign="top" colspan="1" rowspan="2">行代码</td><td width="83" align="center" valign="top" colspan="1" rowspan="2">传输速率</td><td align="center" valign="top" colspan="4" rowspan="1">吞吐量</td></tr><tr><td width="102" align="center" valign="top" colspan="1" rowspan="1">×1</td><td width="102" align="center" valign="top" colspan="1" rowspan="1">×4</td><td width="103" align="center" valign="top" colspan="1" rowspan="1">×8</td><td width="101" align="center" valign="top" colspan="1" rowspan="1">×16</td></tr><tr><td width="70" align="center" valign="top">1.0</td><td width="83" align="center" valign="top">8b/10b</td><td width="96" align="center" valign="top">2.5<a target="_blank" href="/item/GT">GT</a>/s</td><td width="102" align="center" valign="top">250<a target="_blank" href="/item/MB">MB</a>/s</td><td width="102" align="center" valign="top">1<a target="_blank" href="/item/GB">GB</a>/s</td><td width="103" align="center" valign="top">2GB/s</td><td width="101" align="center" valign="top">4GB/s</td></tr><tr><td width="70" align="center" valign="top">2.0</td><td width="83" align="center" valign="top">8b/10b</td><td width="96" align="center" valign="top">5GT/s</td><td width="102" align="center" valign="top">500MB/s</td><td width="102" align="center" valign="top">2GB/s</td><td width="103" align="center" valign="top">4GB/s</td><td width="101" align="center" valign="top">8GB/s</td></tr><tr><td width="70" align="center" valign="top">3.0</td><td width="83" align="center" valign="top">128b/130b</td><td width="96" align="center" valign="top">8GT/s</td><td width="102" align="center" valign="top">984.6MB/s</td><td width="102" align="center" valign="top">3.938GB/s</td><td width="103" align="center" valign="top">7.877GB/s</td><td width="101" align="center" valign="top">15.754GB/s</td></tr><tr><td width="70" align="center" valign="top">4.0</td><td width="83" align="center" valign="top">128b/130b</td><td width="96" align="center" valign="top">16GT/s</td><td width="102" align="center" valign="top">1.969GB/s</td><td width="102" align="center" valign="top">7.877GB/s</td><td width="103" align="center" valign="top">15.754GB/s</td><td width="101" align="center" valign="top">31.508GB/s</td></tr><tr><td width="70" align="center" valign="top">5.0</td><td width="83" align="center" valign="top">128b/130b</td><td width="96" align="center" valign="top">32 or 25GT/s</td><td width="102" align="center" valign="top">3.9 or 3.08GB/s</td><td width="102" align="center" valign="top">15.8 or 12.3GB/s</td><td width="103" align="center" valign="top">31.5 or 24.6GB/s</td><td align="center" valign="top">63.0 or 49.2GB/s</td></tr></tbody></table>
+
+<p>可以看到3.0单通道的传输速率为984.6MB/s。</p>
+<p>简单说一下984.6MB/s是怎么和前面参数联系在一起的：</p>
+<blockquote>
+<p>这里的<code>行代码</code>为<code>128b/130b</code>，意思就是传输的<code>130bit</code>中有<code>128bit</code>是实际传输的数据，其中的<code>2bit</code>可能是附带的信息位什么的，
+<code>传输速率</code>为<code>8GT/s</code>，意思是传输能力为<code>8Gbps</code>（我是这样理解的），注意到<code>Gbps</code>表示<code>1000兆比特</code>，所以：</p>
+</blockquote>
+<script type="math/tex; mode=display">
+吞吐量 = \frac{8000 * 128}{130 * 8} =  984.6MB/s</script><p>通常，主板参数中会显示它的PCIe通道数，这表示它所能最大支持的通道数，其实就是PCIe插槽<strong>插满</strong>的通道数，
+要注意到，PCIe插槽的长度并不固定，如下图所示：</p>
+<div align="center"><img src="/images/guide/pcie.png" style="zoom:50%" title="×4,×16,×1,×16,Conventional PCI. from Wikipedia"></div>
+
+<p>CPU的PCIe通道数表示CPU所包含的通道数，也就是CPU能够提供的PCIe通道数量，即使主板上有再多的PCIe插槽，
+CPU的PCIe通道数不够也没用（这里不准确，可能主板支持PCIe扩展，但那好像也不能根本性解决问题）。</p>
+<p>GPU的通道数表示GPU所需要使用的通道数，同时也表示插上它需要多大的PCIe插槽，通常都是x16的。
+要注意到在PCIe3.0的时代，在深度学习方面，通常x16的通道GPU是用不完的，或许x8就已经足够了，
+当然，如果PCIe通道能够完全满足是最好的。</p>
+<p>PS：如果一颗CPU有<code>40</code>个PCIe通道，插入两块GPU是能够满足的，也就是<code>16 + 16</code>，如果插上3块GPU，
+一般变成<code>16 + 8 + 8</code>，插上四块GPU时变成<code>8 + 8 + 8 + 8</code>。</p>
+<p><strong>另外</strong>，PCIe通道不只是GPU能用，例如高端的固态硬盘使用的就是PCIe通道。</p>
+<p>总结一下，也就两个问题：</p>
+<ol>
+<li>主板的PCIe插槽要够。</li>
+<li>CPU能提供的PCIe通道要够。</li>
+</ol>
+<hr>
+<h2 id="主板"><a href="#主板" class="headerlink" title="主板"></a>主板</h2><p>主板的选择主要考虑的点：</p>
+<ol>
+<li>PCIe插槽数，能否插下四张GPU。</li>
+<li>CPU槽数，是否要插两个CPU。</li>
+<li>最大内存容量。这个看实际的需求来选择即可。</li>
+</ol>
+<p>这里先说一说<strong>单CPU</strong>的主板选择：</p>
+<p>大部分人的选择都是<code>华硕X99-E WS</code>，因为它支持<code>7×PCI-E X16显卡插槽</code>。</p>
+<div align="center"><img src="/images/guide/华硕X99-E WS.png" style="zoom:50%" title="华硕X99-E WS , from zol"></div>
+
+
+<p>也就是它有7个插槽，所以它能够插下4张GPU（并不是有多少插槽就能插多少张GPU，事实上空间不足导致有的插槽不能再插）。
+如果考虑可能会插到4张GPU的话，这张板子会是不错的选择。</p>
+<p>但是，考虑到机器并不光是提供深度学习计算能力，还要有足够的CPU资源来进行虚拟化，所以可能需要选择到两路CPU。</p>
+<p>一旦扯到两路CPU，感觉就像进入了一个另外的领域似的，因为支持两路CPU的都是服务器主板，资料也不多，非常复杂。</p>
+<p>目前一般自己组机的话推荐使用 C612 芯片组的板子，支持两路CPU，PCIe插槽也多。</p>
+<div align="center"><img src="/images/guide/X10DRG-Q.png" style="zoom:80%" title="超微X10DRG-Q, from taobao"></div>
+
+<p>总之主板这方面的知识目前还是非常的欠缺…</p>
+<p>对于华硕主板的详细参数可以去华硕官网查看，<a href="https://www.asus.com.cn/" target="_blank" rel="external">asus.com</a>，
+另外<a href="https://www.supermicro.org.cn/index.cfm" target="_blank" rel="external">supermicro.org</a>可以查到大部分主板的参数。</p>
+<h3 id="内存插槽数-通道数："><a href="#内存插槽数-通道数：" class="headerlink" title="内存插槽数/通道数："></a>内存插槽数/通道数：</h3><p>考虑到内存的扩展性，自然需要考虑内存通道数量的问题。</p>
+<p>内存通道这个概念很容易混淆，可以参考：</p>
+<p><a href="https://www.zhihu.com/question/35625981" target="_blank" rel="external">双通道内存有什么优点和缺点？-知乎</a></p>
+<p><a href="https://www.zhihu.com/question/24510314?sort=created" target="_blank" rel="external">为什么只支持双通道内存的主板会配四个内存插槽？-知乎</a></p>
+<p>简单来说，现在的主板大多支持双通道，比较好的主板（例如x99，服务器主板）会可能支持到四通道（也有支持三通道的主板，但是很少见）。
+那么只支持双通道但是有四个内存插槽的板子什么意思？十分简单的来说，就是一个通道可以插两块内存，
+当两块内存插在同一个通道上的时候，它只是容量叠加，当两个通道分别插上一块或两块内存的时候，才会开启双通道。
+也就是两个通道，每个通道两个插槽，自然就是四个插槽。</p>
+<hr>
+<h2 id="CPU"><a href="#CPU" class="headerlink" title="CPU"></a>CPU</h2><p>CPU的选择主要考虑两点：</p>
+<ol>
+<li>核心数，核心数越多并行能力就越强。</li>
+<li>PCIe通道数，目前单颗CPU最多的能够支持到<strong>40</strong>个通道。</li>
+<li>最大支持内存。</li>
+</ol>
+<p><strong>对于单CPU的选择</strong>，就没什么要求，看它够不够<strong>40</strong>个通道，然后才是频率与核心数量，
+如果不考虑并行，在运行深度学习模型的时候，其实只使用了CPU单核心，因为大部分计算工作都是GPU做了，
+CPU没有太大的任务，所以通常CPU核心数不关键，频率也不是很关键，不要太低就行了。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>型号</th>
+<th>核心数</th>
+<th>PCIe通道数</th>
+<th>最大内存支持</th>
+<th>ECC内存支持</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>i7-6850k</td>
+<td>6核12线程</td>
+<td>PCIe通道数40</td>
+<td>最大内存支持128G</td>
+<td>不支持ECC内存</td>
+</tr>
+<tr>
+<td>i7-7800x</td>
+<td>6核12线程</td>
+<td>PCIe通道数28</td>
+<td>最大内存支持128G</td>
+<td>不支持ECC内存</td>
+</tr>
+<tr>
+<td>E5-2620 v3</td>
+<td>6核12线程</td>
+<td>PCIe通道数40</td>
+<td>最大内存支持768G</td>
+<td>支持ECC内存</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>对于双路CPU来说</strong>，那都是E3/E5，这个通常也不用怎么考虑，选两个通道数够的，频率别太低的就行。</p>
+<p>Intel的CPU参数查询可以去官网：<a href="https://ark.intel.com/zh-cn" target="_blank" rel="external">intel.com</a>。</p>
+<div align="center"><img src="/images/guide/i7-6850K.png" style="zoom:50%" title="i7-6850K, from JD"></div>
+
+<hr>
+<h2 id="GPU"><a href="#GPU" class="headerlink" title="GPU"></a>GPU</h2><p>对于选择GPU主要需要考虑的点：</p>
+<ol>
+<li>价格。毕竟GPU可能是整台主机最贵的硬件，一般还是要掂量掂量。</li>
+<li>深度学习的计算能力。时间也是金钱。</li>
+</ol>
+<p>直接推荐阅读：</p>
+<p><a href="https://blog.slavv.com/picking-a-gpu-for-deep-learning-3d4795c273b9" target="_blank" rel="external">Picking a GPU for Deep Learning-Slav Ivanov</a></p>
+<p><a href="http://timdettmers.com/2017/04/09/which-gpu-for-deep-learning/" target="_blank" rel="external">Which GPU(s) to Get for Deep Learning: My Experience and Advice for Using GPUs in Deep Learning-Tim Dettmers</a></p>
+<p>这里面讲了很多关于深度学习GPU选择的问题。</p>
+<h3 id="AMD还是NVIDIA"><a href="#AMD还是NVIDIA" class="headerlink" title="AMD还是NVIDIA"></a>AMD还是NVIDIA</h3><p>在深度学习这个方面，目前不用考虑AMD。</p>
+<h3 id="NVIDIA显卡的选择"><a href="#NVIDIA显卡的选择" class="headerlink" title="NVIDIA显卡的选择"></a>NVIDIA显卡的选择</h3><p>首先，所选择的型号需要支持<code>CUDA</code>，支持列表<a href="https://developer.nvidia.com/cuda-gpus" target="_blank" rel="external">CUDA GPUs</a>。
+深度学习需要用到<a href="https://developer.nvidia.com/cudnn" target="_blank" rel="external">cuDNN</a>库，那么自然需要显卡支持<code>CUDA</code>。</p>
+<p>另外，由于NVIDIA在10系列的显卡上发了力，这一代的提升完全是突破式的，导致在深度学习的机器门槛低了很多，
+<code>1080</code>、<code>1080Ti</code>、<code>TITAN Xp</code>这些桌面用户级显卡现在也完全可以胜任深度学习的计算，
+比起老架构的计算卡甚至可以快出很多倍。</p>
+<div align="center"><img src="/images/guide/1080Ti.png" style="zoom:70%" title="1080Ti, from NVIDIA"></div>
+
+<p>来看一看1080Ti与K80的比较：</p>
+<div align="center"><img src="/images/guide/1080Ti VS K80.png" style="zoom:70%" title="1080Ti VS K80, from Slav Ivanov"></div>
+
+<p>从上图中，大概可以估计1080Ti比K80在深度学习模型的训练上，要快4倍以上。（那么K80之类的计算卡现在还有什么竞争力？这里需要注意到计算卡是双精度的，但是1080Ti之类的是单精度的，但是在很多需要计算的领域，包括深度学习，只需要单精度就够了。）</p>
+<p>正是由于10系列显卡的发力，所以现在很多人以及实验室都会自己组装深度学习的工作站，因为这实在比直接买带计算卡的服务器便宜多了。</p>
+<h3 id="价格"><a href="#价格" class="headerlink" title="价格"></a>价格</h3><p>以2018年3月11日网上的价格为例：</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>型号</th>
+<th>品牌</th>
+<th>价格</th>
+<th>网站</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1080</td>
+<td>公版</td>
+<td>$989.99</td>
+<td>亚马逊</td>
+</tr>
+<tr>
+<td>1080Ti</td>
+<td>公版</td>
+<td>￥10350.00</td>
+<td>京东</td>
+</tr>
+<tr>
+<td>TITAN Xp</td>
+<td>公版</td>
+<td>￥11999.00</td>
+<td>京东</td>
+</tr>
+<tr>
+<td>TITAN V</td>
+<td>公版</td>
+<td>￥26688.00</td>
+<td>京东</td>
+</tr>
+<tr>
+<td>K80</td>
+<td>公版</td>
+<td>$2298.00</td>
+<td>亚马逊</td>
+</tr>
+<tr>
+<td>P6000</td>
+<td>公版</td>
+<td>$4,669.00</td>
+<td>亚马逊</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p>ps：价格都是随意看的，可能不准确，同时亚马逊到国内还有关税没有考虑。</p>
+<p>之前<code>1080Ti</code>性价比是最高的，因为那时公版<code>1080Ti</code>也就5000~6000人民币，现在涨了快一倍，
+感觉<code>TITAN Xp</code>也可以考虑了。当然，怎么都比计算卡性价比高。</p>
+<hr>
+<h2 id="内存"><a href="#内存" class="headerlink" title="内存"></a>内存</h2><p>对于深度学习来说，内存其实并不重要，实际上训练数据都会读入到显存里面，
+大部分装机建议内存至少要大于显存（显卡的内存总和），因为GPU显存大小并不大（以<code>TITAN X</code>为例，它的显存只有12G，也就是插4张也才48G显存，这时候64G的内存也是足够了）。</p>
+<p>对于单CPU的主板来说，因为是大多是消费级，也基本不用至强CPU（不是所有主板都能插至强系列），所以基本不能使用ECC内存，
+所以通常就直接考虑平常常见的内存就行，海盗船、金士顿、芝奇等的DDR4都可以。</p>
+<div align="center"><img src="/images/guide/海盗船复仇者LPX DDR4 3000 32GB.png" style="zoom:50%" title="海盗船复仇者LPX DDR4 3000 32GB, from JD"></div>
+
+
+<p>对于双路CPU的主板来说，一般都要使用服务器内存，也就是带ECC功能的内存，同时为了良好的扩展性，
+最好是RDIMMs的（LRDIMMs更好），相关可以参考：</p>
+<p><a href="https://baike.baidu.com/item/ECC%E5%86%85%E5%AD%98/1691343?fr=aladdin" target="_blank" rel="external">ECC内存-百度百科</a></p>
+<p><a href="https://www.anandtech.com/show/6068/lrdimms-rdimms-supermicros-latest-twin/2" target="_blank" rel="external">LRDIMMs, RDIMMs, and Supermicro’s Latest Twin-AnandTech</a></p>
+<p>另外简单说一下，对带有ECC的内存，还有一种是RECC内存（<code>Reg ECC</code>），它多比纯ECC内存要多带了一个<code>Register</code>，
+它起到扩大内存容量的作用。</p>
+<p>具体怎么选择，凭我的知识说不好。</p>
+<div align="center"><img src="/images/guide/金士顿(Kingston)DDR4 2133 32G RECC.png" style="zoom:50%" title="金士顿(Kingston)DDR4 2133 32G RECC, from JD"></div>
+
+<p><strong>————分割线————</strong></p>
+<p>下面首先<strong>十分推荐阅读</strong><a href="https://zhuanlan.zhihu.com/p/26255460" target="_blank" rel="external">内存系列一：快速读懂内存条标签-老狼</a>，
+写得很好。</p>
+<h3 id="内存条长短"><a href="#内存条长短" class="headerlink" title="内存条长短"></a>内存条长短</h3><p>内存条有好几种长度，也就是不同的插槽类型，这个需要与主板相匹配。</p>
+<h3 id="内存频率："><a href="#内存频率：" class="headerlink" title="内存频率："></a>内存频率：</h3><p>内存频率类似于CPU频率，频率越高也运行越快，<strong>但是在内存的频率选择时，需要按主板的内存频率支持来选</strong>。</p>
+<h3 id="内存容量："><a href="#内存容量：" class="headerlink" title="内存容量："></a>内存容量：</h3><p>内存容量都是2的次方的大小，平常PC使用的一般是4G或者8G的大小，但也有单条16G、32G的大小。</p>
+<hr>
+<h2 id="硬盘"><a href="#硬盘" class="headerlink" title="硬盘"></a>硬盘</h2><p>首先这里<strong>不讨论固态盘</strong>，硬盘的选择需要考虑下列问题：</p>
+<ol>
+<li>容量。</li>
+<li>速度。</li>
+</ol>
+<p>首先，需要注意到PC硬盘的定位是有好几种的，最简单的，看硬盘颜色，
+分为<strong>黑盘、蓝盘、绿盘、红盘、紫盘等</strong>，关于它们之间的区别，看一个小科普就好：</p>
+<p><a href="http://www.sohu.com/a/168141788_524654" target="_blank" rel="external">你知道电脑硬盘有几种颜色吗？有哪些用途及如何选用你知道吗？-sohu</a></p>
+<p>至于选哪种硬盘，个人使用蓝盘就够了，要好一点就用企业级的。</p>
+<p>然后简单的知道硬盘还有两种接口就行，SAS和SATA。</p>
+<div align="center"><img src="/images/guide/西部数据(WD)红盘.png" style="zoom:50%" title="西部数据(WD)红盘, from JD"></div>
+
+<hr>
+<h2 id="电源"><a href="#电源" class="headerlink" title="电源"></a>电源</h2><ol>
+<li>功率大小。</li>
+<li>价格。</li>
+</ol>
+<p>首先，对于功率大小，就是要保证电源能够提供给各个部件足够的功率，功率计算网站：</p>
+<p><a href="https://outervision.com/power-supply-calculator" target="_blank" rel="external">OuterVision® Power Supply Calculator</a></p>
+<p>电源功率一定不能选小了，否则就会很尴尬，而且还要考虑到多个显卡扩展的情况，</p>
+<p>如果考虑到4显卡扩展，可能至少需要一个1600w的电源。</p>
+<p>至于价格，一般情况下当然是电源越好，价格越高，考虑到可能不间断运行，在电源上就一定要舍得，
+并且电源价格实际上也不算太高。</p>
+<div align="center"><img src="/images/guide/EVGA 额定1600w 1600T2电源.png" style="zoom:50%" title="EVGA 额定1600w 1600T2电源, from JD"></div>
+
+<hr>
+<h2 id="CPU散热"><a href="#CPU散热" class="headerlink" title="CPU散热"></a>CPU散热</h2><ol>
+<li>水冷：冷却效果好，安静，好看，但是可能漏液，导致BOOM。</li>
+<li>风冷：冷却效果比不上水冷，声音稍大，安全性较好。</li>
+</ol>
+<p>这个就看个人喜好了，如果是实验室，当然还是风冷稳一点，品牌一般推荐猫头鹰。</p>
+<div align="center"><img src="/images/guide/猫头鹰NH-D15.png" style="zoom:50%" title="猫头鹰NH-D15, from JD"></div>
+
+<hr>
+<h2 id="机箱"><a href="#机箱" class="headerlink" title="机箱"></a>机箱</h2><p>机箱的选择可能会简单一点，也就是要一个足够大的机箱，能够放下主板以及其它的硬件就好了。</p>
+<p>如果是机房统一管理放置的情况下，一般都是机架式或刀片服务器，可以插在机架上，占用空间少，放便管理。
+但是这类服务器机箱一般比较小，放不下普通消费级显卡。所以在这种情况下一般考虑塔式机箱，
+也就类似平常PC机的主机。</p>
+<p>对于个人组装单CPU型的，一般推荐海盗船AIR540。对于双CPU型的，不知道能否装下主板，
+这可以在购买时咨询店家。</p>
+<div align="center"><img src="/images/guide/海盗船AIR540.png" style="zoom:50%" title="海盗船AIR540, from JD"></div>
+
+<p>双CPU所需的机箱不太清楚，可以在购买时询问一下店家。</p>
+<hr>
+<h2 id="最终建议"><a href="#最终建议" class="headerlink" title="最终建议"></a>最终建议</h2><p>如果是单CPU的深度学习工作站，那完全可以自己买配件组装：</p>
+<ol>
+<li>组装过程十分简单。即使没有装过，看看教程也能学会。</li>
+<li>过程很有意思。</li>
+<li>对于每天接触电脑的人来说，这些知识也算生活技能了。</li>
+</ol>
+<p>但是如果是双CPU，服务器主板，不太建议自己组装（可以买别的商家组好的），主要是：</p>
+<ol>
+<li>各个配件不熟。</li>
+<li>配件不好买。</li>
+<li>商家组好的那种也不算太坑，并且可以询问商家定制化配置，出了问题也好处理。</li>
+</ol>
+<hr>
+<h2 id="所有参考资料"><a href="#所有参考资料" class="headerlink" title="所有参考资料"></a>所有参考资料</h2><p><a href="https://www.zhihu.com/question/33996159" target="_blank" rel="external">如何配置一台适用于深度学习的工作站？-知乎</a></p>
+<p><a href="http://timdettmers.com/2015/03/09/deep-learning-hardware-guide/" target="_blank" rel="external">A Full Hardware Guide to Deep Learning-Tim Dettmers</a></p>
+<p><a href="https://developer.nvidia.com/devbox" target="_blank" rel="external">NVIDIA® DIGITS™ DevBox-NVIDIA</a></p>
+<p><a href="https://superuser.com/questions/843344/what-is-a-pci-express-lane" target="_blank" rel="external">What is a PCI-Express Lane?-superuser</a></p>
+<p><a href="https://baike.baidu.com/item/pcie/2167538?fr=aladdin" target="_blank" rel="external">pcie-百度百科</a></p>
+<p><a href="http://blog.csdn.net/s_sunnyy/article/details/79027379" target="_blank" rel="external">PCIe传输速率和可用带宽（吞吐量）计算-CSDN</a></p>
+<p><a href="https://baike.baidu.com/item/ECC%E5%86%85%E5%AD%98/1691343?fr=aladdin" target="_blank" rel="external">ECC内存-百度百科</a></p>
+<p><a href="https://www.anandtech.com/show/6068/lrdimms-rdimms-supermicros-latest-twin/2" target="_blank" rel="external">LRDIMMs, RDIMMs, and Supermicro’s Latest Twin-AnandTech</a></p>
+<p><a href="https://www.zhihu.com/question/35625981" target="_blank" rel="external">双通道内存有什么优点和缺点？-知乎</a></p>
+<p><a href="https://www.zhihu.com/question/24510314?sort=created" target="_blank" rel="external">为什么只支持双通道内存的主板会配四个内存插槽？-知乎</a></p>
+<p><a href="https://zhuanlan.zhihu.com/p/26255460" target="_blank" rel="external">内存系列一：快速读懂内存条标签-老狼</a></p>
+<p><a href="https://blog.slavv.com/picking-a-gpu-for-deep-learning-3d4795c273b9" target="_blank" rel="external">Picking a GPU for Deep Learning-Slav Ivanov</a></p>
+<p><a href="http://timdettmers.com/2017/04/09/which-gpu-for-deep-learning/" target="_blank" rel="external">Which GPU(s) to Get for Deep Learning: My Experience and Advice for Using GPUs in Deep Learning-Tim Dettmers</a></p>
+<p><a href="http://www.sohu.com/a/168141788_524654" target="_blank" rel="external">你知道电脑硬盘有几种颜色吗？有哪些用途及如何选用你知道吗？-sohu</a></p>
+
+      
+    </div>
+    
+    
+    
+	
+	
+	
+	  <div>
+		<div>
+    
+        <div style="text-align:center;color: #A6A6D2;font-size:16px;">
+		---------------------------------END---------------------------------</div>
+    
+</div>
+	  </div>
+	
+	
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/guide/" rel="tag"># guide</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/03/05/2018-03-05-leetcode_218/" rel="next" title="LeetCode 218 The Skyline Problem">
+                <i class="fa fa-chevron-left"></i> LeetCode 218 The Skyline Problem
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/03/19/2018-03-19-java_jar_jre_reduce/" rel="prev" title="jar包的运行以及jre精简">
+                jar包的运行以及jre精简 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微薄</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/head/head_bigfan.png"
+               alt="龙" />
+          <p class="site-author-name" itemprop="name">龙</p>
+           
+              <p class="site-description motion-element" itemprop="description">哇咔咔</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--插入一段网易云音乐-->
+        <!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33894145&auto=0&height=66"></iframe> -->
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#服务器目标"><span class="nav-number">1.</span> <span class="nav-text">服务器目标</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬件列表"><span class="nav-number">2.</span> <span class="nav-text">硬件列表</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#PCIe"><span class="nav-number">3.</span> <span class="nav-text">PCIe</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#主板"><span class="nav-number">4.</span> <span class="nav-text">主板</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存插槽数-通道数："><span class="nav-number">4.1.</span> <span class="nav-text">内存插槽数/通道数：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU"><span class="nav-number">5.</span> <span class="nav-text">CPU</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#GPU"><span class="nav-number">6.</span> <span class="nav-text">GPU</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AMD还是NVIDIA"><span class="nav-number">6.1.</span> <span class="nav-text">AMD还是NVIDIA</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NVIDIA显卡的选择"><span class="nav-number">6.2.</span> <span class="nav-text">NVIDIA显卡的选择</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#价格"><span class="nav-number">6.3.</span> <span class="nav-text">价格</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#内存"><span class="nav-number">7.</span> <span class="nav-text">内存</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#内存条长短"><span class="nav-number">7.1.</span> <span class="nav-text">内存条长短</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存频率："><span class="nav-number">7.2.</span> <span class="nav-text">内存频率：</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#内存容量："><span class="nav-number">7.3.</span> <span class="nav-text">内存容量：</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#硬盘"><span class="nav-number">8.</span> <span class="nav-text">硬盘</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#电源"><span class="nav-number">9.</span> <span class="nav-text">电源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#CPU散热"><span class="nav-number">10.</span> <span class="nav-text">CPU散热</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#机箱"><span class="nav-number">11.</span> <span class="nav-text">机箱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最终建议"><span class="nav-number">12.</span> <span class="nav-text">最终建议</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#所有参考资料"><span class="nav-number">13.</span> <span class="nav-text">所有参考资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">龙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=63480382";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://long.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/03/08/2018-03-08-deep_learning_server_choosing/';
+          this.page.identifier = '2018/03/08/2018-03-08-deep_learning_server_choosing/';
+          this.page.title = '实验室深度学习服务器选型';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://long.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+
+  <script type="text/javascript" 
+  color="0,0,255" opacity='0.5' zIndex="-1" count="10"
+  src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js">
+  </script>
+
+</body>
+</html>
+
+<!-- 页面点击出现自由民主富强... -->
+<!-- <script type="text/javascript" src="/js/src/click_show_text.js"></script> -->

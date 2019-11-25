@@ -1,0 +1,1262 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="SHArCCfvXfw_nqglhG-0xcYuVh4vZap3KGXfMvJkgv4" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="linux,centos,ceph," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/head/dragon-32x32.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="搭建好集群之后，该如何删除osd，新建osd">
+<meta name="keywords" content="linux,centos,ceph">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ceph-13.2.5删除osd，新建osd">
+<meta property="og:url" content="http://yoursite.com/2019/07/19/2019-07-19-ceph-osd-create-remove/index.html">
+<meta property="og:site_name" content="龙">
+<meta property="og:description" content="搭建好集群之后，该如何删除osd，新建osd">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2019-08-23T08:14:11.568Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="ceph-13.2.5删除osd，新建osd">
+<meta name="twitter:description" content="搭建好集群之后，该如何删除osd，新建osd">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/07/19/2019-07-19-ceph-osd-create-remove/"/>
+
+
+
+
+
+  <title>ceph-13.2.5删除osd，新建osd | 龙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104895670-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5e7e310f93d045726a79eedab4bd21";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">哇咔咔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/19/2019-07-19-ceph-osd-create-remove/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="龙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head/head_bigfan.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ceph-13.2.5删除osd，新建osd</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-19T00:00:00+08:00">
+                2019-07-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/linux/" itemprop="url" rel="index">
+                    <span itemprop="name">linux</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2019/07/19/2019-07-19-ceph-osd-create-remove/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2019/07/19/2019-07-19-ceph-osd-create-remove/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  搭建好集群之后，该如何删除osd，新建osd
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<h2 id="前言"><a href="#前言" class="headerlink" title="前言"></a>前言</h2><p>在搭建集群的时候，在node2上挂了一个lvm格式的osd（VG1/MyLvm），10G大小，想着既然是lvm，那就可以直接扩容，
+所以又加了一个10G的虚拟硬盘，并扩容进了VG1/MyLvm，结果就是：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> lsblk</div><div class="line"></div><div class="line">NAME            MAJ:MIN RM  SIZE RO TYPE MOUNTPOINT</div><div class="line">sda               8:0    0   20G  0 disk </div><div class="line">├─sda1            8:1    0    1G  0 part /boot</div><div class="line">└─sda2            8:2    0   19G  0 part </div><div class="line">  ├─centos-root 253:0    0   17G  0 lvm  /</div><div class="line">  └─centos-swap 253:1    0    2G  0 lvm  [SWAP]</div><div class="line">sdb               8:16   0   10G  0 disk </div><div class="line">└─sdb1            8:17   0   10G  0 part </div><div class="line">  └─VG1-MyLvm   253:2    0   20G  0 lvm  </div><div class="line">sdc               8:32   0   10G  0 disk </div><div class="line">└─sdc1            8:33   0   10G  0 part </div><div class="line">  └─VG1-MyLvm   253:2    0   20G  0 lvm  </div><div class="line">sr0              11:0    1 1024M  0 rom </div><div class="line"></div><div class="line"><span class="meta">$</span> sudo vgdisplay</div><div class="line"></div><div class="line">  --- Volume group ---</div><div class="line">  VG Name               centos</div><div class="line">  System ID             </div><div class="line">  Format                lvm2</div><div class="line">  Metadata Areas        1</div><div class="line">  Metadata Sequence No  3</div><div class="line">  VG Access             read/write</div><div class="line">  VG Status             resizable</div><div class="line">  MAX LV                0</div><div class="line">  Cur LV                2</div><div class="line">  Open LV               2</div><div class="line">  Max PV                0</div><div class="line">  Cur PV                1</div><div class="line">  Act PV                1</div><div class="line">  VG Size               &lt;19.00 GiB</div><div class="line">  PE Size               4.00 MiB</div><div class="line">  Total PE              4863</div><div class="line">  Alloc PE / Size       4863 / &lt;19.00 GiB</div><div class="line">  Free  PE / Size       0 / 0   </div><div class="line">  VG UUID               fEJqFf-qaqN-ZeZe-3FG1-Jeya-SyAi-WCtB0u</div><div class="line">   </div><div class="line">  --- Volume group ---</div><div class="line">  VG Name               VG1</div><div class="line">  System ID             </div><div class="line">  Format                lvm2</div><div class="line">  Metadata Areas        2</div><div class="line">  Metadata Sequence No  39</div><div class="line">  VG Access             read/write</div><div class="line">  VG Status             resizable</div><div class="line">  MAX LV                0</div><div class="line">  Cur LV                1</div><div class="line">  Open LV               1</div><div class="line">  Max PV                0</div><div class="line">  Cur PV                2</div><div class="line">  Act PV                2</div><div class="line">  VG Size               19.99 GiB</div><div class="line">  PE Size               4.00 MiB</div><div class="line">  Total PE              5118</div><div class="line">  Alloc PE / Size       5118 / 19.99 GiB</div><div class="line">  Free  PE / Size       0 / 0   </div><div class="line">  VG UUID               OMx43d-hsd1-80vh-DCvO-870t-zPSn-123yoU</div></pre></td></tr></table></figure>
+<p>首先可以看到逻辑卷MyLvm的确变成了20G大小。</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo ceph osd df tree</div><div class="line"></div><div class="line">ID CLASS WEIGHT  REWEIGHT SIZE   USE     AVAIL   %USE  VAR  PGS TYPE NAME      </div><div class="line">-1       0.02939        - 40 GiB  13 GiB  27 GiB 33.56 1.00   - root default   </div><div class="line">-3       0.00980        - 10 GiB 1.1 GiB 8.9 GiB 11.42 0.34   -     host node1 </div><div class="line"> 0   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.9 GiB 11.42 0.34  68         osd.0  </div><div class="line">-5       0.00980        - 20 GiB  11 GiB 8.9 GiB 55.71 1.66   -     host node2 </div><div class="line"> 1   hdd 0.00980  1.00000 20 GiB  11 GiB 8.9 GiB 55.71 1.66   0         osd.1  </div><div class="line">-7       0.00980        - 10 GiB 1.1 GiB 8.9 GiB 11.42 0.34   -     host node3 </div><div class="line"> 2   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.9 GiB 11.42 0.34  68         osd.2  </div><div class="line">                    TOTAL 40 GiB  13 GiB  27 GiB 33.56</div></pre></td></tr></table></figure>
+<p>可以看到<code>osd.1</code>的容量的确变成了20G，<strong>但是</strong>已经用了<strong>11G</strong>？？？
+<strong>刚挂上去的10G空间全部被标记为使用？？？</strong></p>
+<p>不明白这是什么原理，可能这样去扩容是不对的，为了把这10G空间夺取回来，
+决定先删除osd.1，清空lvm卷，再把它加回来。</p>
+<hr>
+<h2 id="删除osd"><a href="#删除osd" class="headerlink" title="删除osd"></a>删除osd</h2><p>这里直接参考官方教程<a href="http://docs.ceph.com/docs/master/rados/operations/add-or-rm-osds/" target="_blank" rel="external">ADDING/REMOVING OSDS</a></p>
+<p>步骤即：</p>
+<ol>
+<li>将osd设置为out。</li>
+<li>关闭正在运行的osd进程。</li>
+<li>从<code>crush map</code>中删除它。</li>
+<li>删除<code>OSD authentication key</code>。</li>
+<li>删除osd。</li>
+</ol>
+<p>命令如下：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo ceph osd out osd.1</div><div class="line"></div><div class="line">marked out osd.1.</div><div class="line"></div><div class="line"><span class="meta">$</span> sudo systemctl stop ceph-osd@1</div><div class="line"></div><div class="line"><span class="meta">$</span> sudo ceph osd crush remove osd.1</div><div class="line"></div><div class="line">removed item id 1 name 'osd.1' from crush map</div><div class="line"></div><div class="line"><span class="meta">$</span> sudo ceph auth del osd.1</div><div class="line"></div><div class="line">updated</div><div class="line"></div><div class="line"><span class="meta">$</span> sudo ceph osd rm 1</div><div class="line"></div><div class="line">removed osd.1</div></pre></td></tr></table></figure>
+<p>查看集群状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo ceph -s</div><div class="line"></div><div class="line">  cluster:</div><div class="line">    id:     082d1625-1d68-4261-82c8-3fe9fe3ef489</div><div class="line">    health: HEALTH_WARN</div><div class="line">            Degraded data redundancy: 256/768 objects degraded (33.333%), 32 pgs degraded, 68 pgs undersized</div><div class="line"> </div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum node1,node2,node3</div><div class="line">    mgr: node1(active), standbys: node3, node2</div><div class="line">    mds: fs_test-1/1/1 up  &#123;0=node1=up:active&#125;</div><div class="line">    osd: 2 osds: 2 up, 2 in</div><div class="line">    rgw: 1 daemon active</div><div class="line"> </div><div class="line">  data:</div><div class="line">    pools:   8 pools, 68 pgs</div><div class="line">    objects: 256  objects, 136 MiB</div><div class="line">    usage:   2.3 GiB used, 18 GiB / 20 GiB avail</div><div class="line">    pgs:     256/768 objects degraded (33.333%)</div><div class="line">             36 active+undersized</div><div class="line">             32 active+undersized+degraded</div><div class="line"></div><div class="line"><span class="meta">$</span> sudo ceph osd df tree</div><div class="line"></div><div class="line">ID CLASS WEIGHT  REWEIGHT SIZE   USE     AVAIL   %USE  VAR  PGS TYPE NAME      </div><div class="line">-1       0.01959        - 10 GiB 1.1 GiB 8.8 GiB     0    0   - root default   </div><div class="line">-3       0.00980        - 10 GiB 1.1 GiB 8.8 GiB 11.48 1.00   -     host node1 </div><div class="line"> 0   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.8 GiB 11.48 1.00  68         osd.0  </div><div class="line">-5             0        -    0 B     0 B     0 B     0    0   -     host node2 </div><div class="line">-7       0.00980        - 10 GiB 1.1 GiB 8.8 GiB 11.48 1.00   -     host node3 </div><div class="line"> 2   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.8 GiB 11.48 1.00  68         osd.2  </div><div class="line">                    TOTAL 20 GiB 2.3 GiB  18 GiB 11.48</div></pre></td></tr></table></figure>
+<p>可以看到<code>osd.1</code>已经删除，这里的WARN是因为只有两个osd节点造成的。</p>
+<hr>
+<h2 id="创建osd"><a href="#创建osd" class="headerlink" title="创建osd"></a>创建osd</h2><hr>
+<p><strong>方法一：使用ceph-deploy。</strong></p>
+<p>因为这里相当于是撤下来的盘，所以先将它里面的内容擦除，借助<code>ceph-volume</code>来进行：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo ceph-volume lvm zap VG1/MyLvm</div><div class="line"></div><div class="line"><span class="meta">--&gt;</span> Zapping: /dev/VG1/MyLvm</div><div class="line"><span class="meta">--&gt;</span> Unmounting /var/lib/ceph/osd/ceph-1</div><div class="line">Running command: /bin/umount -v /var/lib/ceph/osd/ceph-1</div><div class="line"> stderr: umount: /var/lib/ceph/osd/ceph-1 (tmpfs) unmounted</div><div class="line">Running command: /usr/sbin/wipefs --all /dev/VG1/MyLvm</div><div class="line">Running command: /bin/dd if=/dev/zero of=/dev/VG1/MyLvm bs=1M count=10</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.type=block /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.osd_id=1 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.cluster_fsid=082d1625-1d68-4261-82c8-3fe9fe3ef489 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.cluster_name=ceph /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.osd_fsid=a59044b3-ff4c-4a99-978f-1336ff4504a0 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.encrypted=0 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.cephx_lockbox_secret= /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.block_uuid=B553Ss-LYdv-3FEW-q5u9-XKph-qn2v-y3ecu0 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.block_device=/dev/VG1/MyLvm /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.vdo=0 /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line">Running command: /usr/sbin/lvchange --deltag ceph.crush_device_class=None /dev/VG1/MyLvm</div><div class="line"> stdout: Logical volume VG1/MyLvm changed.</div><div class="line"><span class="meta">--&gt;</span> Zapping successful for: &lt;LV: /dev/VG1/MyLvm&gt;</div></pre></td></tr></table></figure>
+<p>使用ceph-delpoy创建osd：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> ceph-deploy osd create --data VG1/MyLvm node2</div><div class="line"></div><div class="line">......</div><div class="line">......</div><div class="line">[node2][DEBUG ] --&gt; ceph-volume lvm activate successful for osd ID: 1</div><div class="line">[node2][DEBUG ] --&gt; ceph-volume lvm create successful for: VG1/MyLvm</div><div class="line">[node2][INFO  ] checking OSD status...</div><div class="line">[node2][DEBUG ] find the location of an executable</div><div class="line">[node2][INFO  ] Running command: sudo /bin/ceph --cluster=ceph osd stat --format=json</div><div class="line">[ceph_deploy.osd][DEBUG ] Host node2 is now ready for osd use.</div></pre></td></tr></table></figure>
+<p>查询集群状态：</p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo ceph -s</div><div class="line">  cluster:</div><div class="line">    id:     082d1625-1d68-4261-82c8-3fe9fe3ef489</div><div class="line">    health: HEALTH_OK</div><div class="line"> </div><div class="line">  services:</div><div class="line">    mon: 3 daemons, quorum node1,node2,node3</div><div class="line">    mgr: node1(active), standbys: node3, node2</div><div class="line">    mds: fs_test-1/1/1 up  &#123;0=node1=up:active&#125;</div><div class="line">    osd: 3 osds: 3 up, 3 in</div><div class="line">    rgw: 1 daemon active</div><div class="line"> </div><div class="line">  data:</div><div class="line">    pools:   8 pools, 68 pgs</div><div class="line">    objects: 256  objects, 136 MiB</div><div class="line">    usage:   3.5 GiB used, 37 GiB / 40 GiB avail</div><div class="line">    pgs:     68 active+clean</div><div class="line"> </div><div class="line"><span class="meta">$</span> sudo ceph osd df tree</div><div class="line">ID CLASS WEIGHT  REWEIGHT SIZE   USE     AVAIL   %USE  VAR  PGS TYPE NAME      </div><div class="line">-1       0.03908        - 40 GiB 3.3 GiB  37 GiB  8.34 1.00   - root default   </div><div class="line">-3       0.00980        - 10 GiB 1.1 GiB 8.8 GiB 11.49 1.38   -     host node1 </div><div class="line"> 0   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.8 GiB 11.49 1.38  68         osd.0  </div><div class="line">-5       0.01949        - 20 GiB 1.0 GiB  19 GiB  5.20 0.62   -     host node2 </div><div class="line"> 1   hdd 0.01949  1.00000 20 GiB 1.0 GiB  19 GiB  5.20 0.62  55         osd.1  </div><div class="line">-7       0.00980        - 10 GiB 1.1 GiB 8.8 GiB 11.49 1.38   -     host node3 </div><div class="line"> 2   hdd 0.00980  1.00000 10 GiB 1.1 GiB 8.8 GiB 11.49 1.38  68         osd.2  </div><div class="line">                    TOTAL 40 GiB 3.3 GiB  37 GiB  8.34                         </div><div class="line">MIN/MAX VAR: 0.62/1.38  STDDEV: 3.14</div></pre></td></tr></table></figure>
+<p>可以看到集群现在就健康了，并且osd.1就有19G可用了。</p>
+<hr>
+<p><strong>方法二：手动创建。</strong></p>
+<p><strong>尝试官方教程失败，如下：</strong></p>
+<figure class="highlight shell"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div></pre></td><td class="code"><pre><div class="line"><span class="meta">$</span> sudo mount -o user_xattr /dev/VG1/MyLvm /var/lib/ceph/osd/ceph-1</div><div class="line"></div><div class="line">mount: wrong fs type, bad option, bad superblock on /dev/mapper/VG1-MyLvm,</div><div class="line">       missing codepage or helper program, or other error</div><div class="line"></div><div class="line">       In some cases useful info is found in syslog - try</div><div class="line">       dmesg | tail or so.</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">$</span> sudo mount /dev/VG1/MyLvm /var/lib/ceph/osd/ceph-1</div><div class="line"></div><div class="line"></div><div class="line"><span class="meta">$</span> sudo ceph-osd -i 1 --mkfs --mkkey</div><div class="line"></div><div class="line">2019-07-19 16:54:52.691 7efc821c7d80 -1 auth: unable to find a keyring on /var/lib/ceph/osd/ceph-1/keyring: (2) No such file or directory</div><div class="line">2019-07-19 16:54:52.691 7efc821c7d80 -1 monclient: ERROR: missing keyring, cannot use cephx for authentication</div><div class="line">failed to fetch mon config (--no-mon-config to skip)</div></pre></td></tr></table></figure>
+<p><strong>暂时放弃手动。</strong></p>
+<hr>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p><a href="http://docs.ceph.com/docs/master/rados/operations/add-or-rm-osds/" target="_blank" rel="external">ADDING/REMOVING OSDS</a></p>
+
+      
+    </div>
+    
+    
+    
+	
+	
+	
+	  <div>
+		<div>
+    
+        <div style="text-align:center;color: #A6A6D2;font-size:16px;">
+		---------------------------------END---------------------------------</div>
+    
+</div>
+	  </div>
+	
+	
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/linux/" rel="tag"># linux</a>
+          
+            <a href="/tags/centos/" rel="tag"># centos</a>
+          
+            <a href="/tags/ceph/" rel="tag"># ceph</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/07/18/2019-07-18-ceph-install/" rel="next" title="centos7上的ceph指定版本安装方法">
+                <i class="fa fa-chevron-left"></i> centos7上的ceph指定版本安装方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/07/22/2019-07-22-ceph-mon-add-destroy/" rel="prev" title="ceph-13.2.5添加mon，删除mon（ceph-deploy）">
+                ceph-13.2.5添加mon，删除mon（ceph-deploy） <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微薄</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/head/head_bigfan.png"
+               alt="龙" />
+          <p class="site-author-name" itemprop="name">龙</p>
+           
+              <p class="site-description motion-element" itemprop="description">哇咔咔</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--插入一段网易云音乐-->
+        <!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33894145&auto=0&height=66"></iframe> -->
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#前言"><span class="nav-number">1.</span> <span class="nav-text">前言</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#删除osd"><span class="nav-number">2.</span> <span class="nav-text">删除osd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#创建osd"><span class="nav-number">3.</span> <span class="nav-text">创建osd</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">4.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">龙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=63480382";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://long.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2019/07/19/2019-07-19-ceph-osd-create-remove/';
+          this.page.identifier = '2019/07/19/2019-07-19-ceph-osd-create-remove/';
+          this.page.title = 'ceph-13.2.5删除osd，新建osd';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://long.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+
+  
+
+  
+
+
+  <script type="text/javascript" 
+  color="0,0,255" opacity='0.5' zIndex="-1" count="10"
+  src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js">
+  </script>
+
+</body>
+</html>
+
+<!-- 页面点击出现自由民主富强... -->
+<!-- <script type="text/javascript" src="/js/src/click_show_text.js"></script> -->

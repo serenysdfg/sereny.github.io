@@ -1,0 +1,1629 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+  <meta name="google-site-verification" content="SHArCCfvXfw_nqglhG-0xcYuVh4vZap3KGXfMvJkgv4" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+  
+  
+  
+  
+
+  
+    
+    
+  
+
+  
+
+  
+
+  
+
+  
+    
+      
+    
+
+    
+  
+
+  
+    
+    
+    <link href="//fonts.googleapis.com/css?family=Monda:300,300italic,400,400italic,700,700italic|Consolas:300,300italic,400,400italic,700,700italic&subset=latin,latin-ext" rel="stylesheet" type="text/css">
+  
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.2" rel="stylesheet" type="text/css" />
+
+
+  <meta name="keywords" content="algorithm," />
+
+
+
+
+
+  <link rel="alternate" href="/atom.xml" title="龙" type="application/atom+xml" />
+
+
+
+
+  <link rel="shortcut icon" type="image/x-icon" href="/images/head/dragon-32x32.png?v=5.1.2" />
+
+
+
+
+
+
+<meta name="description" content="记录下自己对匈牙利算法与KM算法的理解">
+<meta name="keywords" content="algorithm">
+<meta property="og:type" content="article">
+<meta property="og:title" content="匈牙利算法和KM算法">
+<meta property="og:url" content="http://yoursite.com/2018/05/05/2018-05-05-KM/index.html">
+<meta property="og:site_name" content="龙">
+<meta property="og:description" content="记录下自己对匈牙利算法与KM算法的理解">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/偶图.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/最大匹配.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_1.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_2.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_3.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_4.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_5.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_6.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/匈牙利算法_7.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/KM算法_1.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/KM算法_2.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/KM算法_3.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/KM算法_4.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/KM算法_5.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/Going_Home.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/Going_Home_2.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/奔小康赚大钱_1.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/奔小康赚大钱_2.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/Cyclic_Tour_1.png">
+<meta property="og:image" content="http://yoursite.com/images/algorithm/Cyclic_Tour_2.png">
+<meta property="og:updated_time" content="2018-05-09T11:39:31.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="匈牙利算法和KM算法">
+<meta name="twitter:description" content="记录下自己对匈牙利算法与KM算法的理解">
+<meta name="twitter:image" content="http://yoursite.com/images/algorithm/偶图.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.2',
+    sidebar: {"position":"left","display":"hide","offset":12,"offset_float":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: true,
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/05/05/2018-05-05-KM/"/>
+
+
+
+
+
+  <title>匈牙利算法和KM算法 | 龙</title>
+  
+
+
+
+
+<script>
+  (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+          m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+  })(window,document,'script','https://www.google-analytics.com/analytics.js','ga');
+  ga('create', 'UA-104895670-1', 'auto');
+  ga('send', 'pageview');
+</script>
+
+
+  <script type="text/javascript">
+    var _hmt = _hmt || [];
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "https://hm.baidu.com/hm.js?db5e7e310f93d045726a79eedab4bd21";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail ">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">龙</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">哇咔咔</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-about">
+          <a href="/about/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-user"></i> <br />
+            
+            关于
+          </a>
+        </li>
+      
+
+      
+        <li class="menu-item menu-item-search">
+          
+            <a href="javascript:;" class="popup-trigger">
+          
+            
+              <i class="menu-item-icon fa fa-search fa-fw"></i> <br />
+            
+            搜索
+          </a>
+        </li>
+      
+    </ul>
+  
+
+  
+    <div class="site-search">
+      
+  <div class="popup search-popup local-search-popup">
+  <div class="local-search-header clearfix">
+    <span class="search-icon">
+      <i class="fa fa-search"></i>
+    </span>
+    <span class="popup-btn-close">
+      <i class="fa fa-times-circle"></i>
+    </span>
+    <div class="local-search-input-wrapper">
+      <input autocomplete="off"
+             placeholder="搜索..." spellcheck="false"
+             type="text" id="local-search-input">
+    </div>
+  </div>
+  <div id="local-search-result"></div>
+</div>
+
+
+
+    </div>
+  
+</nav>
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/05/05/2018-05-05-KM/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="龙">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/head/head_bigfan.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="龙">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">匈牙利算法和KM算法</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-05-05T08:48:37+08:00">
+                2018-05-05
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/algorithm/" itemprop="url" rel="index">
+                    <span itemprop="name">algorithm</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2018/05/05/2018-05-05-KM/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count disqus-comment-count"
+                        data-disqus-identifier="2018/05/05/2018-05-05-KM/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+              <div class="post-description">
+                  记录下自己对匈牙利算法与KM算法的理解
+              </div>
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <hr>
+<p>本来是在写最小费用最大流的，然后找到<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1533" target="_blank" rel="external">Going Home</a>这道题。这道题的确是可以使用费用流来解，但是复杂度有点儿高，
+然后想了一下，其实可以用匹配来解决。那么既然都用匹配了，这里就将算法进行一下记录，毕竟匹配算法还是比较常用的。</p>
+<p>在这里，主要还是针对偶图来说，下面一步一步记录。</p>
+<hr>
+<h1 id="偶图"><a href="#偶图" class="headerlink" title="偶图"></a>偶图</h1><p><strong>偶图</strong>也称为二部图，是指具有二分类（X，Y）的图，它的点集可以分解为两个（非空）子集X和Y，使得每条边的一个端点在X中，
+另一个端点在Y中。</p>
+<p><strong>完全偶图</strong>就是X中每一个点与Y中每一个点都有连边。</p>
+<p>下图就是一个偶图，但不是完全偶图：</p>
+<p><img src="/images/algorithm/偶图.png" alt="偶图" title="偶图"></p>
+<hr>
+<h1 id="匹配"><a href="#匹配" class="headerlink" title="匹配"></a>匹配</h1><p>给定图G=(V,E)。设M是E的一个不包含环的子集，它的任意两条边在G中<strong>均不相邻</strong>，则称M为G的匹配。
+M中一条边的两个端点称为在M下是配对的，同时这两个点也是<strong>饱和</strong>的。若在M下，G的每一个顶点都是饱和的，
+则称M为G的<strong>完美匹配</strong>。若G没有另外的匹配M’，使得|M|&lt;|M’|，则称为G的<strong>最大匹配</strong>。<strong>完美匹配</strong>也是<strong>最大匹配</strong>，
+反之不成立。</p>
+<p>对于<strong>偶图</strong>来说，一条边连接了X中的一个点和Y中的一个点，通常在这里就是为了找到最大匹配或者是完美匹配，
+使得X中（或Y中）的点能够都达到饱和。</p>
+<p><strong>偶图</strong>都有最大匹配，但是只有在X的点数等于Y的点数的情况下，才可能有完美匹配。X与Y点数相等的<strong>完全偶图</strong>显然一定有完美匹配。</p>
+<p>对于一个X与Y点数相等的<strong>完全偶图</strong>，如果每一条边都有一个权重，那么在其中寻找一个具有最大权和的完美匹配，就称这个匹配为<strong>最优匹配</strong>。</p>
+<p><img src="/images/algorithm/最大匹配.png" alt="最大匹配" title="最大匹配"></p>
+<p>上图是一个最大匹配，注意到它不是完美匹配（V8不饱和）。</p>
+<hr>
+<h1 id="匈牙利算法"><a href="#匈牙利算法" class="headerlink" title="匈牙利算法"></a>匈牙利算法</h1><p><strong>匈牙利算法</strong>可以用于在<strong>偶图</strong>中寻找<strong>最大匹配</strong>。</p>
+<p>它的思路的确很简单，直接先举例：</p>
+<p><img src="/images/algorithm/匈牙利算法_1.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>要在上图中寻找最大匹配。</p>
+<p><img src="/images/algorithm/匈牙利算法_2.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>按照顺序来一个点一个点的进行匹配。</p>
+<ul>
+<li>x1直接匹配到y1。</li>
+<li>x2先查看y1，发现y1已经匹配了，所以又查看y2，它还没有匹配，所以x2匹配上y2。</li>
+<li>x3先查看y2，发现y2已经匹配了，所以又查看y3，它还没有匹配，所以x3匹配上y3。</li>
+</ul>
+<p><img src="/images/algorithm/匈牙利算法_3.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>但是对于x4，很尴尬，它会发现y2，y3都已经匹配了。</p>
+<p>这时就是体现匈牙利算法思想的时候了，那就是去寻求一条<strong>可扩路</strong>。</p>
+<p><strong>可扩路</strong>就是起点与终点均为非饱和点的<strong>交错路</strong>。<strong>交错路</strong>就是处于匹配中的边和未处于匹配中的边相互交错组成的路。</p>
+<p><img src="/images/algorithm/匈牙利算法_4.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>如上图所示，黄色边表示不在当前匹配中的边，红色边表示在匹配中的边，红黄交错，所以这里就是交错路。</p>
+<p>对于上面一条路，它的起点和终点都是非饱和点，所有就是一条可扩路。</p>
+<p><strong>那么将黄色红色相互交换，就能得到下面那条路，相当于匹配边与未匹配边相互交换，这样这条路上所有的点就都饱和了，岂不美哉？</strong></p>
+<p>那么回到x4，我们希望以x4这个未饱和点为起点，去找到一条可扩路，然后匹配边与非匹配边一交换，x4就能饱和了。</p>
+<p><img src="/images/algorithm/匈牙利算法_5.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>这里使用深度优先搜索的方式来找可扩路，先找到y2，然后y2找到x2，然后x2再找到y4。于是就找到了可扩路（x4，y2，x2，y4）。</p>
+<p><strong>PS：</strong>事实上在这里深度优先搜索时，要进过几次搜索失败才能到找到上面这条可扩路：</p>
+<ul>
+<li>x4，y2，x2，y1，x1，y2。（重复y2，搜索失败）</li>
+<li>x4，y2，x2，y1，x1，y3，x3，y2（重复y2，搜索失败）</li>
+<li>x4，y2，x2，y4。（搜索成功）</li>
+</ul>
+<p><img src="/images/algorithm/匈牙利算法_6.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>进行扩充，也就是将匹配（x2，y2）换成了（x2，y4）、（x4，y2）。</p>
+<p><img src="/images/algorithm/匈牙利算法_7.png" alt="匈牙利算法" title="匈牙利算法"></p>
+<p>最后将（x5，y5）匹配上，这里就找到了最大匹配。</p>
+<p><strong>步骤总结：</strong></p>
+<ol>
+<li>初始化顶点编号，令n=1。</li>
+<li>若n大于顶点数N，结束。否则步骤3。</li>
+<li>深度优先搜索寻找顶点n的可扩路。如果找到，进行扩充，如果未找到，则这个顶点没法饱和。n = n + 1，返回步骤2.</li>
+</ol>
+<hr>
+<h1 id="KM算法"><a href="#KM算法" class="headerlink" title="KM算法"></a>KM算法</h1><p>匈牙利算法用于在<strong>偶图</strong>中寻找<strong>最大匹配</strong>。</p>
+<p>那么如果要在<strong>完全偶图</strong>中寻找<strong>最优匹配</strong>，就需要用到这里的<strong>KM算法</strong>。</p>
+<p><strong>KM算法</strong>的思想实际上并不复杂，举个简单的例如描述一下它的思想：</p>
+<blockquote>
+<p>假如有<code>M</code>个工人去做<code>M</code>份工作，这些工作每个工人都会做，但是效率不一样，所以希望分配工作能够使得总效率最大。 
+先假设你不会KM算法，那么你就按照正常人的思路去想：</p>
+<ol>
+<li>先让每个人都挑他们效率最高的那份工作，如果都不冲突，那显然分配已经最优了。否则有冲突，那么继续想办法。</li>
+<li>对于冲突了的几个人，让他们中最叼的那个哥们换另一份工作试试，看看能不能解决冲突，这样损失的总效率最小。
+比如A、B、C之间冲突了，假如一共5份工作<code>(a,b,c,d,e)</code>，
+他们的效率分别是<code>A(100,100,99,99,99)</code>、<code>B(8,7,4,3,2)</code>、<code>C(5,5,1,1,1)</code>，
+在第一轮里面，按照最大效率的选择，A想选ab中的一个，B想选a，C想选ab中的一个，显然他们三个冲突了。
+假如这时d没人选，你如果拍脑袋想，“B你去做a，A你去做b，C你去做d，因为C你最垃圾，A做b的效率可是100”，
+那么三人的总效率加起来就是<code>8 + 100 + 1 = 109</code>，但是很遗憾，不是最优。
+这时你的分配应该是“B你去做a，C你去做b，A你去做d，因为C你就只能做这玩意，换一个别的你做不了，A换成d也差不多效率”，
+这是三人的总效率加起来就是<code>8 + 5 + 99 = 112</code>，这时就是最好的分配方案。 </li>
+</ol>
+<p>当然这个例子比较简单，在复杂情况下冲突会发生多次。 </p>
+</blockquote>
+<p>那么按照<strong>完全偶图(X,Y)</strong>来说，思路就是：</p>
+<ol>
+<li>控制目前图上能选边的数量，第一轮每个X都只有权重最大边能选。</li>
+<li>使用匈牙利算法来分配，如果分配成功，这就是最优匹配，否则转步骤3。</li>
+<li>对于冲突的部分，想办法添加边进来解决冲突，添加的边是冲突的几个点中权重损失最小的那一条，然后转步骤2。</li>
+</ol>
+<p><strong>上面的都是语言上的描述，很不准确，下面搬一下书上的数学语言描述。</strong></p>
+<hr>
+<h2 id="可行顶点标号"><a href="#可行顶点标号" class="headerlink" title="可行顶点标号"></a>可行顶点标号</h2><p><strong>定义</strong>：若在顶点集$X \bigcup Y$上的实值函数L适合下述条件：对所有的$x \in X$及$y \in Y$均有</p>
+<script type="math/tex; mode=display">
+L(x) + L(y) \geqslant w(xy)</script><p>则把这个函数称为该偶图的一个可行顶点标号。</p>
+<p>可行顶点标号也就是每条边的权重都没有它的两端点标号之和大，不管偶图是什么样子，都存在一个可行顶点标号：</p>
+<script type="math/tex; mode=display">
+\begin{cases}
+L(x) = \max_{y \in Y} w(xy), 若 x \in X \\ 
+L(y) = 0, 若y \in Y
+\end{cases}</script><p>其实这就是上面的“每个X都只有权重最大边能选”。</p>
+<hr>
+<h2 id="相等子图"><a href="#相等子图" class="headerlink" title="相等子图"></a>相等子图</h2><p><strong>定义</strong>：若L是可行顶点标号，则$E_L$表示可行性顶点标号定义中，使得等式成立的那些边，即：</p>
+<script type="math/tex; mode=display">
+E_L=\{xy|xy \in E, L(x) + L(y) = w(xy)\}</script><p>则称具有边集$E_L$的G的生成子图为对应于可行顶点标号L的相等子图，记为$G_L$。</p>
+<hr>
+<h2 id="相关定理"><a href="#相关定理" class="headerlink" title="相关定理"></a>相关定理</h2><p>设L是G=(V,E)的可行顶点标号。若$G_L$包含完美匹配$M^*$，则$M^*$是G的最优匹配。</p>
+<p><strong>证明：</strong></p>
+<p>假设$G_L$包含完美匹配$M^*$。由于$G_L$是G的生成子图，所以$M^*$也就是G的完美匹配。于是</p>
+<script type="math/tex; mode=display">
+W(M^*) = \sum_{e \in M^*} w(e) = \sum_{v \in V} L(v)</script><p>这是因为每个$e \in M^*$都属于这个相等子图，且$M^*$的边的端点覆盖V的每个顶点恰好一次。
+另一方面，若M是G的任一完美匹配，则有</p>
+<script type="math/tex; mode=display">
+W(M) = \sum_{e \in M}w(e) \leqslant \sum_{v \in V} L(v)</script><p>从上面两个式子可以看出，$W(M^*) \geqslant W(M)$。于是$M^*$是最优匹配。</p>
+<hr>
+<h2 id="Kuhn-Munkres"><a href="#Kuhn-Munkres" class="headerlink" title="Kuhn-Munkres"></a>Kuhn-Munkres</h2><p><strong>KM算法</strong>由Kuhn(1955)和Munkers(1957)提出，所以取名叫<code>KM</code>。</p>
+<p>它的思想就是：</p>
+<ol>
+<li>给定一个可行顶点标号。</li>
+<li>在相等子图上使用匈牙利算法，如果<strong>完美匹配</strong>，则也是<strong>最优匹配</strong>（上面已经证明）。否则进入下一步。</li>
+<li><strong>修改</strong>可行顶点标号，使得相等子图中冲突的几个点的边更多，再回到步骤2。</li>
+</ol>
+<p>它的步骤如下（主要需要注意的就是它修改可行顶点标号的方式）：</p>
+<blockquote>
+<p>从任一可行顶点标号L开始，然后决定$G_L$，并且在$G_L$中选取任一匹配M。</p>
+<ol>
+<li><p>若X是M饱和的，则M是完美匹配，且由定理15知M是最优匹配，在这种情况下，算法终止。
+否则，令u是一个M非饱和点，置$S=\{u\}$，$T= \varnothing$。</p>
+</li>
+<li><p>若$N_{G_L}(S) \supset T$，则转到步骤3。否则$N_{G_L}(S)=T$。计算</p>
+<script type="math/tex; mode=display">
+\alpha_L = \min_{x \in S \\ y \notin T} \{L(x) + L(y) - w(xy)\}</script><p>且由</p>
+<script type="math/tex; mode=display">
+\hat{L} = 
+\begin{cases}
+L(v) - \alpha_L , v \in S, \\
+L(v) + \alpha_L , v \in T, \\
+L(v), 其它
+\end{cases}</script><p>给出可行顶点标号$\hat{L}$（注意$\alpha_L &gt; 0$且$N_{G_{\hat{L}}} \supseteq T$）。
+以$\hat{L}$代替L，以$G_{\hat{L}}$代替$G_L$。</p>
+</li>
+<li><p>在$N_{G_L}(S) \setminus T$中选择一个顶点y。和上节中树的生长程序一样，考察y是否M饱和。
+若y是M饱和的，且$yz \in M$，则用$S \cup \{z\}$代替S，用$T \cup \{y\}$代替T，再转到步骤2.
+否则，设P是$G_L$中的M可扩(u,y)路，用${M}’=M \triangle E(P)$代替M，并转到步骤1。</p>
+</li>
+</ol>
+</blockquote>
+<p>上面的$N_{G_L}(S)$表示在$G_L$这个图中，S这个点集的所有相邻的点。<br>$N_{G_L}(S) \setminus T$表示$N_{G_L}(S)$这个集合减去T这个集合。<br>$M \triangle E(P)$在这里表示$M - M \cap E(p) + (E(p) - M \cap E(p))$，其实也就是在可扩路上进行匹配扩展，边集交换。 </p>
+<hr>
+<h2 id="例子实际操作"><a href="#例子实际操作" class="headerlink" title="例子实际操作"></a>例子实际操作</h2><p>只看上面的步骤其实还不太会实际操作，这里给一个实际的例子。</p>
+<p><img src="/images/algorithm/KM算法_1.png" alt="KM算法" title="KM算法"></p>
+<p>上图就是一个具体的例子，左边就是权重矩阵，行表示x点，列表示y点，
+x顶点的标号已经初始化（按照上面描述的可行顶点标号中的方法初始化）。
+图的右边就是现在的相等子图（边的权重等于两端点的标号之和）。</p>
+<p>那么下面的步骤就是在相等子图上使用<strong>匈牙利算法</strong>。</p>
+<p><img src="/images/algorithm/KM算法_2.png" alt="KM算法" title="KM算法"></p>
+<p>很简单的，前三个x点就能找到匹配。</p>
+<p><img src="/images/algorithm/KM算法_3.png" alt="KM算法" title="KM算法"></p>
+<p>但是到x4时，发现找不到匹配，即使经过搜索也找不到（肉眼就能看出来x1，x3，x4三个点，一起抢y2，y3两个点，显然不能完美匹配）。</p>
+<p>那么修改顶点标号。</p>
+<p>按照上面的KM算法步骤2中的公式$\alpha_L = \min_{x \in S \ y \notin T} \{L(x) + L(y) - w(xy)\}$，
+这里的S就是{x1,x3,x4}这三个点，
+T就时{y2，y3}这两个点，可以算出$\alpha = 1$。</p>
+<p>同样按照KM算法步骤2中的公式，用算出来的$\alpha = 1$，修改顶点标号，x1，x3，x4三个点标号减去$\alpha$，y2，y3两个点标号加上$\alpha$，</p>
+<p><img src="/images/algorithm/KM算法_4.png" alt="KM算法" title="KM算法"></p>
+<p>图中左边的顶点标号已经修改，右边相等子图发生了变化，蓝色边就是新加入的边。</p>
+<p>另外需要注意的是(x2,y2)这条边不在相等子图里面了，<strong>这个细节表明了相等子图中的边可不是越来越多！增加边的同时也会有减少的边！
+所以上面算法说了，可以从任一可行标点开始！当然，通常写代码时从X标号值最大开始，思考起来会比较连贯。</strong></p>
+<p><img src="/images/algorithm/KM算法_5.png" alt="KM算法" title="KM算法"></p>
+<p>然后很简单的就能得到完美匹配，也就是这里的最优匹配。</p>
+<hr>
+<h2 id="KM算法复杂度"><a href="#KM算法复杂度" class="headerlink" title="KM算法复杂度"></a>KM算法复杂度</h2><p>注意到每一次找可扩路失败会修改顶点标号，在修改顶点标号后，都会至少有一个新的y端点加入，
+也就是对于一个未饱和点，最多修改$O(n)$次顶点标号就能找到可扩路。</p>
+<ol>
+<li>KM算法需要找到可扩路的数量为$O(n)$。</li>
+<li>每次尝试寻找可扩路的复杂度$O(n^2)$。</li>
+<li>尝试找到可扩路，最多尝试$O(n)$次，也就是最多需要修改$O(n)$次顶点标号。</li>
+<li>每一次修改顶点标号需要$O(n^2)$的复杂度。</li>
+</ol>
+<p>从两个方面看，</p>
+<ol>
+<li><code>可扩路的数量 * 尝试寻找可扩路次数 * 尝试寻找可扩路的复杂度</code>为$O(n^4)$。</li>
+<li><code>可扩路的数量 * 最多需要修改顶点标号的次数 * 每一次修改顶点标号的复杂度</code>为$O(n^4)$。</li>
+</ol>
+<p>所以KM算法的复杂度为上面两个部分相加，所有最后还是$O(n^4)$。</p>
+<p><strong>
+PS：网上很多博客都说可以把修改顶点标号的复杂度降到$O(n^3)$（的确可以），然后KM算法的复杂度就能降到$O(n^3)$???
+但是他们用的都是DFS，对此我表示深刻的怀疑，感觉应该是把复杂度降到$O(n^4) + O(n^3)$，但是实际上应该还是$O(n^4)$的复杂度，
+不过降低了常数因子，应该是快了一倍，但是并不能有数量级上的变化。</strong><br><strong>只有使用BFS的写法才能达到$O(n^3)$，后面进行解释。</strong></p>
+<hr>
+<h2 id="KM算法个人理解"><a href="#KM算法个人理解" class="headerlink" title="KM算法个人理解"></a>KM算法个人理解</h2><p>可以从上面例子看出KM算法的<strong>精髓</strong>，那就是<strong>在相等子图找不到完美匹配时，修改顶点标号，
+让冲突的那几个点在相等子图里面能够有更多的边，并至少多连接一个y顶点。</strong></p>
+<p><strong>这里之所以$\alpha$取min，是为了顶点标号之和损失最小。因为：</strong></p>
+<ol>
+<li><strong>最优匹配的值就等于所有点顶点标号之和。</strong></li>
+<li><strong>在最优匹配里面每一个顶点出现一次仅一次，相等子图的每条边权重等于它两端点标号和。</strong></li>
+</ol>
+<p>这里对于X标号值从大到小的算法步骤而言，每一次发生冲突，都是因为几个x点它们共同可以选择的y点的数量比它们小（例如上面例子中三个x点竞争两个y点），
+也就是KM算法步骤2中的S集合的规模一定大于T集合，$|S|&gt;|T|$。所以在进行标号修改时，由于S中的点减去标号值，T中的点加上标号值，
+所以<strong>所有点的标号之和就一定会比之前小</strong>。</p>
+<ul>
+<li>如果发生冲突，S集合的规模一定大于T集合，$|S|&gt;|T|$。</li>
+<li>标号修改量$\alpha$一定是个大于零的值。</li>
+<li>在进行标号修改时，S中的每个点减去标号值，T中的每个点加上标号值。</li>
+<li>所有点的标号之和一定减小。</li>
+</ul>
+<p>上面这段是为了表达<strong>KM算法</strong>有一种这个意味：<strong>“最开始期望一个最大的最优匹配，如果不行再一点一点降低期望。”</strong></p>
+<hr>
+<h1 id="代码"><a href="#代码" class="headerlink" title="代码"></a>代码</h1><p>是时候上代码了。</p>
+<hr>
+<h2 id="DFS版本"><a href="#DFS版本" class="headerlink" title="DFS版本"></a>DFS版本</h2><p><strong>DFS版本（复杂度$O(n^4)$）:</strong></p>
+<p>虽然我没有参考一个网络上的模板，但是写出来也大同小异…</p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KM_DFS</span> </span>&#123;</div><div class="line"></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][] table = <span class="keyword">null</span>;     <span class="comment">// 权重矩阵（方阵）</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xl = <span class="keyword">null</span>;          <span class="comment">// X标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yl = <span class="keyword">null</span>;          <span class="comment">// Y标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xMatch = <span class="keyword">null</span>;      <span class="comment">// X点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yMatch = <span class="keyword">null</span>;      <span class="comment">// Y点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> n = <span class="number">0</span>;                <span class="comment">// 矩阵维度</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> a = <span class="number">0</span>;                <span class="comment">// 标号修改量</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[][] table)</span> </span>&#123; <span class="comment">// 入口，输入权重矩阵</span></div><div class="line">        <span class="keyword">this</span>.table = table;</div><div class="line">        init();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;  <span class="comment">// 为每一个x寻找匹配</span></div><div class="line">            <span class="keyword">boolean</span>[] S = <span class="keyword">new</span> <span class="keyword">boolean</span>[n], T = <span class="keyword">new</span> <span class="keyword">boolean</span>[n]; <span class="comment">// S集合，T集合</span></div><div class="line">            a = Integer.MAX_VALUE;</div><div class="line">            <span class="keyword">while</span> ( !dfs(S, T, x) ) &#123;   <span class="comment">// 找到可扩路结束，否则修改标号值</span></div><div class="line">                LModified(S, T);</div><div class="line">                Arrays.fill(S, <span class="keyword">false</span>);</div><div class="line">                Arrays.fill(T, <span class="keyword">false</span>);</div><div class="line">                a = Integer.MAX_VALUE;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> value = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            value += table[x][xMatch[x]];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">boolean</span> <span class="title">dfs</span><span class="params">(<span class="keyword">boolean</span>[] S, <span class="keyword">boolean</span>[] T, <span class="keyword">int</span> x)</span> </span>&#123;  <span class="comment">// 深度优先搜索</span></div><div class="line">        S[x] = <span class="keyword">true</span>;</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;</div><div class="line">            <span class="keyword">if</span> ( T[y] ) &#123;</div><div class="line">                <span class="keyword">continue</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> tmp = xl[x] + yl[y] - table[x][y];</div><div class="line">            <span class="keyword">if</span> ( tmp == <span class="number">0</span> ) &#123;  <span class="comment">// 在相等子树中</span></div><div class="line">                T[y] = <span class="keyword">true</span>;</div><div class="line">                <span class="keyword">if</span> ( yMatch[y] == -<span class="number">1</span> || dfs(S, T, yMatch[y]) ) &#123;     <span class="comment">// 1. y顶点没有匹配，那么进行匹配</span></div><div class="line">                    xMatch[x] = y;                                   <span class="comment">// 2. dfs寻找可扩路成功，那么这条x，y就会因为可扩路的扩展而交换到匹配中</span></div><div class="line">                    yMatch[y] = x;</div><div class="line">                    <span class="keyword">return</span> <span class="keyword">true</span>;</div><div class="line">                &#125;</div><div class="line">            &#125; <span class="keyword">else</span> &#123;    <span class="comment">// 不在相等子树中</span></div><div class="line">                a = Math.min(tmp, a);</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> <span class="keyword">false</span>;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.n = table.length;</div><div class="line">        <span class="keyword">this</span>.xl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xl, Integer.MIN_VALUE);</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;</div><div class="line">                <span class="keyword">if</span> ( table[x][y] &gt; xl[x] ) &#123;</div><div class="line">                    xl[x] = table[x][y];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">this</span>.xMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xMatch, -<span class="number">1</span>);</div><div class="line">        Arrays.fill(yMatch, -<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">LModified</span><span class="params">(<span class="keyword">boolean</span>[] S, <span class="keyword">boolean</span>[] T)</span> </span>&#123; <span class="comment">// 修改标号值</span></div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++ ) &#123;</div><div class="line">            <span class="keyword">if</span> ( S[i] ) &#123;</div><div class="line">                xl[i] -= a;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> ( T[i] ) &#123;</div><div class="line">                yl[i] += a;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line">    </div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<h2 id="BFS版本"><a href="#BFS版本" class="headerlink" title="BFS版本"></a>BFS版本</h2><p><strong>版本1（复杂度$O(n^4)$）：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KM_BFS_1</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][] table = <span class="keyword">null</span>;     <span class="comment">// 权重矩阵（方阵）</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xl = <span class="keyword">null</span>;          <span class="comment">// X标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yl = <span class="keyword">null</span>;          <span class="comment">// Y标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xMatch = <span class="keyword">null</span>;      <span class="comment">// X点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yMatch = <span class="keyword">null</span>;      <span class="comment">// Y点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> n = <span class="number">0</span>;                <span class="comment">// 矩阵维度</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[][] table)</span> </span>&#123; <span class="comment">// 入口，输入权重矩阵</span></div><div class="line">        <span class="keyword">this</span>.table = table;</div><div class="line">        init();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            bfs(x);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> value = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            value += table[x][xMatch[x]];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> startX)</span> </span>&#123;   <span class="comment">// 为一个x点寻找匹配</span></div><div class="line">        <span class="keyword">boolean</span> find = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">int</span> endY = -<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span>[] yPre = <span class="keyword">new</span> <span class="keyword">int</span>[n];     <span class="comment">// 标识搜索路径上y点的前一个点</span></div><div class="line">        <span class="keyword">boolean</span>[] S = <span class="keyword">new</span> <span class="keyword">boolean</span>[n], T = <span class="keyword">new</span> <span class="keyword">boolean</span>[n]; <span class="comment">// S集合，T集合</span></div><div class="line">        Arrays.fill(yPre, -<span class="number">1</span>);</div><div class="line"></div><div class="line">        <span class="keyword">int</span> a = Integer.MAX_VALUE;</div><div class="line">        <span class="keyword">int</span>[] queue = <span class="keyword">new</span> <span class="keyword">int</span>[n];    <span class="comment">// 队列</span></div><div class="line">        <span class="keyword">int</span> qs = <span class="number">0</span>, qe = <span class="number">0</span>;          <span class="comment">// 队列开始结束索引</span></div><div class="line">        queue[qe++] = startX;</div><div class="line">        <span class="keyword">while</span> (<span class="keyword">true</span>) &#123;               <span class="comment">// 循环直到找到匹配</span></div><div class="line">            <span class="keyword">while</span> (qs &lt; qe &amp;&amp; !find) &#123;   <span class="comment">// 队列不为空</span></div><div class="line">                <span class="keyword">int</span> x = queue[qs++];</div><div class="line">                S[x] = <span class="keyword">true</span>;</div><div class="line">                <span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++) &#123;</div><div class="line">                    <span class="keyword">int</span> tmp = xl[x] + yl[y] - table[x][y];</div><div class="line">                    <span class="keyword">if</span> ( tmp == <span class="number">0</span> ) &#123;  <span class="comment">// 相等子树中的边</span></div><div class="line">                        <span class="keyword">if</span> (T[y]) &#123;</div><div class="line">                            <span class="keyword">continue</span>;</div><div class="line">                        &#125;</div><div class="line">                        T[y] = <span class="keyword">true</span>;</div><div class="line">                        yPre[y] = x;</div><div class="line">                        <span class="keyword">if</span> (yMatch[y] == -<span class="number">1</span>) &#123;</div><div class="line">                            endY = y;</div><div class="line">                            find = <span class="keyword">true</span>;</div><div class="line">                            <span class="keyword">break</span>;</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            queue[qe++] = yMatch[y];</div><div class="line">                        &#125;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;      <span class="comment">// 不在相等子树中的边，记录一下最小差值</span></div><div class="line">                        a = Math.min(a, tmp);</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> ( find ) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            qs = qe = <span class="number">0</span>;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++ ) &#123;  <span class="comment">// 根据a修改标号值</span></div><div class="line">                <span class="keyword">if</span> ( S[i] ) &#123;</div><div class="line">                    xl[i] -= a;</div><div class="line">                    queue[qe++] = i;        <span class="comment">// 把所有在S中的点加回到队列中</span></div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> ( T[i] ) &#123;</div><div class="line">                    yl[i] += a;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            a = Integer.MAX_VALUE;</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">while</span> ( endY != -<span class="number">1</span> ) &#123;       <span class="comment">// 找到可扩路最后的y点后，回溯并扩充</span></div><div class="line">            <span class="keyword">int</span> preX = yPre[endY], preY = xMatch[preX];</div><div class="line">            xMatch[preX] = endY;</div><div class="line">            yMatch[endY] = preX;</div><div class="line">            endY = preY;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.n = table.length;</div><div class="line">        <span class="keyword">this</span>.xl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xl, Integer.MIN_VALUE);</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;</div><div class="line">                <span class="keyword">if</span> ( table[x][y] &gt; xl[x] ) &#123;</div><div class="line">                    xl[x] = table[x][y];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">this</span>.xMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xMatch, -<span class="number">1</span>);</div><div class="line">        Arrays.fill(yMatch, -<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<p><strong>版本2（复杂度$O(n^3)$）：</strong></p>
+<figure class="highlight java"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div></pre></td><td class="code"><pre><div class="line"><span class="keyword">public</span> <span class="class"><span class="keyword">class</span> <span class="title">KM_BFS_2</span> </span>&#123;</div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[][] table = <span class="keyword">null</span>;     <span class="comment">// 权重矩阵（方阵）</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xl = <span class="keyword">null</span>;          <span class="comment">// X标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yl = <span class="keyword">null</span>;          <span class="comment">// Y标号值</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] xMatch = <span class="keyword">null</span>;      <span class="comment">// X点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span>[] yMatch = <span class="keyword">null</span>;      <span class="comment">// Y点对应的匹配点</span></div><div class="line">    <span class="keyword">private</span> <span class="keyword">int</span> n = <span class="number">0</span>;                <span class="comment">// 矩阵维度</span></div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">public</span> <span class="keyword">int</span> <span class="title">solve</span><span class="params">(<span class="keyword">int</span>[][] table)</span> </span>&#123; <span class="comment">// 入口，输入权重矩阵</span></div><div class="line">        <span class="keyword">this</span>.table = table;</div><div class="line">        init();</div><div class="line"></div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            bfs(x);</div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">int</span> value = <span class="number">0</span>;</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            value += table[x][xMatch[x]];</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">return</span> value;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> startX)</span> </span>&#123;    <span class="comment">// 为一个x点寻找匹配</span></div><div class="line"></div><div class="line">        <span class="keyword">boolean</span> find = <span class="keyword">false</span>;</div><div class="line">        <span class="keyword">int</span> endY = -<span class="number">1</span>;</div><div class="line">        <span class="keyword">int</span>[] yPre = <span class="keyword">new</span> <span class="keyword">int</span>[n];      <span class="comment">// 标识搜索路径上y点的前一个点</span></div><div class="line">        <span class="keyword">boolean</span>[] S = <span class="keyword">new</span> <span class="keyword">boolean</span>[n], T = <span class="keyword">new</span> <span class="keyword">boolean</span>[n]; <span class="comment">// S集合，T集合</span></div><div class="line">        <span class="keyword">int</span>[] slackY = <span class="keyword">new</span> <span class="keyword">int</span>[n];    <span class="comment">// Y点的松弛变量</span></div><div class="line">        Arrays.fill(yPre, -<span class="number">1</span>);</div><div class="line">        Arrays.fill(slackY, Integer.MAX_VALUE);</div><div class="line"></div><div class="line">        <span class="keyword">int</span>[] queue = <span class="keyword">new</span> <span class="keyword">int</span>[n];     <span class="comment">// 队列</span></div><div class="line">        <span class="keyword">int</span> qs = <span class="number">0</span>, qe = <span class="number">0</span>;           <span class="comment">// 队列开始结束索引</span></div><div class="line">        queue[qe++] = startX;</div><div class="line">        <span class="keyword">while</span> (!find) &#123;       <span class="comment">// 循环直到找到匹配</span></div><div class="line">            <span class="keyword">while</span> (qs &lt; qe &amp;&amp; !find) &#123;   <span class="comment">// 队列不为空</span></div><div class="line">                <span class="keyword">int</span> x = queue[qs++];</div><div class="line">                S[x] = <span class="keyword">true</span>;</div><div class="line">                <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;</div><div class="line">                    <span class="keyword">if</span> ( T[y] ) &#123;</div><div class="line">                        <span class="keyword">continue</span>;</div><div class="line">                    &#125;</div><div class="line">                    <span class="keyword">int</span> tmp = xl[x] + yl[y] - table[x][y];</div><div class="line">                    <span class="keyword">if</span> ( tmp == <span class="number">0</span> ) &#123;  <span class="comment">// 相等子树中的边</span></div><div class="line">                        T[y] = <span class="keyword">true</span>;</div><div class="line">                        yPre[y] = x;</div><div class="line">                        <span class="keyword">if</span> ( yMatch[y] == -<span class="number">1</span> ) &#123;</div><div class="line">                            endY = y;</div><div class="line">                            find = <span class="keyword">true</span>;</div><div class="line">                            <span class="keyword">break</span>;</div><div class="line">                        &#125; <span class="keyword">else</span> &#123;</div><div class="line">                            queue[qe++] = yMatch[y];</div><div class="line">                        &#125;</div><div class="line">                    &#125; <span class="keyword">else</span> <span class="keyword">if</span> ( slackY[y] &gt; tmp ) &#123; <span class="comment">// 不在相等子树中的边，看是否能够更新松弛变量</span></div><div class="line">                        slackY[y] = tmp;</div><div class="line">                        yPre[y] = x;</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">if</span> ( find ) &#123;</div><div class="line">                <span class="keyword">break</span>;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">int</span> a = Integer.MAX_VALUE;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;  <span class="comment">// 找到最小的松弛值</span></div><div class="line">                <span class="keyword">if</span> ( !T[y] ) &#123;</div><div class="line">                    a = Math.min(a, slackY[y]);</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++ ) &#123;  <span class="comment">// 根据a修改标号值</span></div><div class="line">                <span class="keyword">if</span> ( S[i] ) &#123;</div><div class="line">                    xl[i] -= a;</div><div class="line">                &#125;</div><div class="line">                <span class="keyword">if</span> ( T[i] ) &#123;</div><div class="line">                    yl[i] += a;</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line"></div><div class="line">            qs = qe = <span class="number">0</span>;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;        <span class="comment">// 重要！！！控制修改标号之后需要检查的x点</span></div><div class="line">                <span class="keyword">if</span> ( !T[y] &amp;&amp; slackY[y] == a ) &#123;   <span class="comment">// 查看那些y点新加入到T集合，注意，这些y点的前向x点都记录在了yPre里面，所以这些x点不用再次入队</span></div><div class="line">                    T[y] = <span class="keyword">true</span>;                </div><div class="line">                    <span class="keyword">if</span> ( yMatch[y] == -<span class="number">1</span> ) &#123;       <span class="comment">// 新加入的y点没有匹配，那么就找到可扩路了</span></div><div class="line">                        endY = y;</div><div class="line">                        find = <span class="keyword">true</span>;</div><div class="line">                        <span class="keyword">break</span>;</div><div class="line">                    &#125; <span class="keyword">else</span> &#123;   <span class="comment">// 新加入的y点已经有匹配了，将它匹配的x加到队列</span></div><div class="line">                        queue[qe++] = yMatch[y];</div><div class="line">                    &#125;</div><div class="line">                &#125;</div><div class="line">                slackY[y] -= a;   <span class="comment">// 所有松弛值减去a。(对于T集合中的松弛值已经没用了，对于不在T集合里面的y点，</span></div><div class="line">            &#125;                     <span class="comment">// 它们的松弛值是通过S集合中的x点求出的，S集合中的x点的标号值在上面都减去了a，所以这里松弛值也要减去a)</span></div><div class="line">        &#125;</div><div class="line"></div><div class="line">        <span class="keyword">while</span> ( endY != -<span class="number">1</span> ) &#123;    <span class="comment">// 找到可扩路最后的y点后，回溯并扩充</span></div><div class="line">            <span class="keyword">int</span> preX = yPre[endY], preY = xMatch[preX];</div><div class="line">            xMatch[preX] = endY;</div><div class="line">            yMatch[endY] = preX;</div><div class="line">            endY = preY;</div><div class="line">        &#125;</div><div class="line">    &#125;</div><div class="line"></div><div class="line">    <span class="function"><span class="keyword">private</span> <span class="keyword">void</span> <span class="title">init</span><span class="params">()</span> </span>&#123;</div><div class="line">        <span class="keyword">this</span>.n = table.length;</div><div class="line">        <span class="keyword">this</span>.xl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yl = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xl, Integer.MIN_VALUE);</div><div class="line">        <span class="keyword">for</span> ( <span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++ ) &#123;</div><div class="line">            <span class="keyword">for</span> ( <span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++ ) &#123;</div><div class="line">                <span class="keyword">if</span> ( table[x][y] &gt; xl[x] ) &#123;</div><div class="line">                    xl[x] = table[x][y];</div><div class="line">                &#125;</div><div class="line">            &#125;</div><div class="line">        &#125;</div><div class="line">        <span class="keyword">this</span>.xMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        <span class="keyword">this</span>.yMatch = <span class="keyword">new</span> <span class="keyword">int</span>[n];</div><div class="line">        Arrays.fill(xMatch, -<span class="number">1</span>);</div><div class="line">        Arrays.fill(yMatch, -<span class="number">1</span>);</div><div class="line">    &#125;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<hr>
+<h2 id="代码解释"><a href="#代码解释" class="headerlink" title="代码解释"></a>代码解释</h2><p>不把一个算法写成代码，真的不能算看懂了这个算法。</p>
+<p>写这几份代码花费了一天的时间，大部分时间都用在了BFS代码上，巧妙的地方太多了，先说一下BFS算法的思想：</p>
+<p><strong>BFS算法思想：</strong>BFS_1代码的思想其实没什么特殊的，只是和DFS的遍历方式不一样，所有减小了一些边的重复遍历次数。
+<strong>但是对于BFS_2这份代码来说，第一个就是松弛变量，它使得每个x节点不用重复入队，第二个是数组实现队列，省掉了很多的容器操作。</strong></p>
+<p><strong>松弛变量（slack数组）这个东西，在DFS里面没有很大的作用，但是在BFS里面就变得很重要，它是BFS_2算法的核心。</strong></p>
+<p><strong>松弛变量：</strong></p>
+<ol>
+<li>每一次修改标号值，都在相等子图里面会增加y点。</li>
+<li>每一次增加的y点，就是松弛变量值最小的那些y点。</li>
+<li>加入的y点在可扩路中的前向点是在计算最小松弛变量$L(x) + L(y) - w(xy)$中的那个x点。</li>
+<li>修改标号值时使用的最小松弛变量值是从那些不在T集合中的y点的松弛变量值中选出来的。</li>
+<li>所有y点的松弛变量值都是由在S集合中的那些x点算出来的。</li>
+<li><strong>未被加入T集合的y点，在修改标号值时，由于S集合的所有x点的标号值减去了$\alpha$，所以这些y点的松弛变量值也要减去$\alpha$。</strong></li>
+</ol>
+<p><strong>BFS中的queue：</strong>本来应该是使用集合Queue来操作，但是那样增加了许多复杂度，实际上<strong>每个x最多入队一次</strong>，所以这里可以使用数组来进行操作。</p>
+<hr>
+<h2 id="BenchMark"><a href="#BenchMark" class="headerlink" title="BenchMark"></a>BenchMark</h2><p>对上面三份代码进行测试，查看他们实际上的性能。</p>
+<div class="table-container">
+<table>
+<thead>
+<tr>
+<th>例子数</th>
+<th>矩阵最大维度</th>
+<th>权重范围</th>
+<th>DFS用时（秒）</th>
+<th>BFS_1用时（秒）</th>
+<th>BFS_2用时（秒）</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>1000</td>
+<td>300</td>
+<td>10</td>
+<td>2.013</td>
+<td>0.34</td>
+<td>0.389</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>300</td>
+<td>100</td>
+<td>1.418</td>
+<td>0.437</td>
+<td>0.779</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>300</td>
+<td>1000</td>
+<td>2.734</td>
+<td>0.923</td>
+<td>1.202</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>300</td>
+<td>10000</td>
+<td>10.455</td>
+<td>3.413</td>
+<td>1.435</td>
+</tr>
+<tr>
+<td>1000</td>
+<td>300</td>
+<td>100000</td>
+<td>29.347</td>
+<td>11.564</td>
+<td>1.542</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1000</td>
+<td>10</td>
+<td>3.651</td>
+<td>0.231</td>
+<td>0.263</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1000</td>
+<td>100</td>
+<td>2.213</td>
+<td>0.296</td>
+<td>0.365</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1000</td>
+<td>1000</td>
+<td>1.357</td>
+<td>0.445</td>
+<td>0.716</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1000</td>
+<td>10000</td>
+<td>3.677</td>
+<td>1.102</td>
+<td>0.893</td>
+</tr>
+<tr>
+<td>50</td>
+<td>1000</td>
+<td>100000</td>
+<td>12.689</td>
+<td>5.531</td>
+<td>1.178</td>
+</tr>
+</tbody>
+</table>
+</div>
+<p><strong>BFS全面优于DFS，BFS_2受到权重范围的影响较小。</strong></p>
+<p><strong>上面的结果和之前的算法复杂度很接近，果然DFS是$O(n^4)$，BFS_1其实也是$O(n^4)$，BFS_2是真正的$O(n^3)$</strong>，当然在权重范围不大时，BFS_1是效果最好的。</p>
+<hr>
+<h1 id="例题"><a href="#例题" class="headerlink" title="例题"></a>例题</h1><p>下面使用一些例题来参考。</p>
+<hr>
+<h2 id="1-Going-Home"><a href="#1-Going-Home" class="headerlink" title="1. Going Home"></a>1. Going Home</h2><p>这道题来自杭州电子科技大学的OJ，题号1533，<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1533" target="_blank" rel="external">Going Home</a>。</p>
+<p><img src="/images/algorithm/Going_Home.png" alt="Going Home" title="Going Home"></p>
+<p>题目的意思就是，有几个人要回到房子里面去，每一个房子只能住一个人，现在人数和房子数一样，但是要怎么分配房子才能使的大家回房子的总路程最小。</p>
+<p>我知道的解法有两种，第一种是将这看作图，然后使用最小费用最大流，这个方法可以AC，但是感觉太过于复杂了。</p>
+<p>第二种方法就是把房子和人看成两个集合，相互连线，权重就是人到房子的距离，这样就转化为了一个寻找最优匹配的问题，不过这里是找路径总长最小，
+那么为了沿用模板，把所有权重取一个负号就行。</p>
+<p><strong>代码就是用的上面的模板，这里就不贴了。</strong></p>
+<p><strong>用时:</strong></p>
+<p><img src="/images/algorithm/Going_Home_2.png" alt="Use Time" title="Use Time"></p>
+<hr>
+<h2 id="2-奔小康赚大钱"><a href="#2-奔小康赚大钱" class="headerlink" title="2. 奔小康赚大钱"></a>2. 奔小康赚大钱</h2><p>这道题来自<a href="http://acm.hdu.edu.cn/showproblem.php?pid=2255" target="_blank" rel="external">HDU-2255</a>。</p>
+<p><img src="/images/algorithm/奔小康赚大钱_1.png" alt="奔小康赚大钱" title="奔小康赚大钱"></p>
+<p>这道题直接就是一个求最优匹配的问题。</p>
+<p><strong>这道题对java不友好！！！</strong>，我上面的KM算法都试了一下，java就是过不了，艹了。看了提交统计，就没有java版本通过。</p>
+<p>改成c++之后就通过了？？？</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><div class="line">1</div><div class="line">2</div><div class="line">3</div><div class="line">4</div><div class="line">5</div><div class="line">6</div><div class="line">7</div><div class="line">8</div><div class="line">9</div><div class="line">10</div><div class="line">11</div><div class="line">12</div><div class="line">13</div><div class="line">14</div><div class="line">15</div><div class="line">16</div><div class="line">17</div><div class="line">18</div><div class="line">19</div><div class="line">20</div><div class="line">21</div><div class="line">22</div><div class="line">23</div><div class="line">24</div><div class="line">25</div><div class="line">26</div><div class="line">27</div><div class="line">28</div><div class="line">29</div><div class="line">30</div><div class="line">31</div><div class="line">32</div><div class="line">33</div><div class="line">34</div><div class="line">35</div><div class="line">36</div><div class="line">37</div><div class="line">38</div><div class="line">39</div><div class="line">40</div><div class="line">41</div><div class="line">42</div><div class="line">43</div><div class="line">44</div><div class="line">45</div><div class="line">46</div><div class="line">47</div><div class="line">48</div><div class="line">49</div><div class="line">50</div><div class="line">51</div><div class="line">52</div><div class="line">53</div><div class="line">54</div><div class="line">55</div><div class="line">56</div><div class="line">57</div><div class="line">58</div><div class="line">59</div><div class="line">60</div><div class="line">61</div><div class="line">62</div><div class="line">63</div><div class="line">64</div><div class="line">65</div><div class="line">66</div><div class="line">67</div><div class="line">68</div><div class="line">69</div><div class="line">70</div><div class="line">71</div><div class="line">72</div><div class="line">73</div><div class="line">74</div><div class="line">75</div><div class="line">76</div><div class="line">77</div><div class="line">78</div><div class="line">79</div><div class="line">80</div><div class="line">81</div><div class="line">82</div><div class="line">83</div><div class="line">84</div><div class="line">85</div><div class="line">86</div><div class="line">87</div><div class="line">88</div><div class="line">89</div><div class="line">90</div><div class="line">91</div><div class="line">92</div><div class="line">93</div><div class="line">94</div><div class="line">95</div><div class="line">96</div><div class="line">97</div><div class="line">98</div><div class="line">99</div><div class="line">100</div><div class="line">101</div><div class="line">102</div><div class="line">103</div><div class="line">104</div><div class="line">105</div><div class="line">106</div><div class="line">107</div><div class="line">108</div><div class="line">109</div><div class="line">110</div><div class="line">111</div><div class="line">112</div><div class="line">113</div><div class="line">114</div><div class="line">115</div><div class="line">116</div><div class="line">117</div><div class="line">118</div><div class="line">119</div><div class="line">120</div><div class="line">121</div><div class="line">122</div><div class="line">123</div><div class="line">124</div><div class="line">125</div><div class="line">126</div><div class="line">127</div><div class="line">128</div><div class="line">129</div><div class="line">130</div><div class="line">131</div><div class="line">132</div></pre></td><td class="code"><pre><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;iostream&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstdio&gt;</span></span></div><div class="line"><span class="meta">#<span class="meta-keyword">include</span><span class="meta-string">&lt;cstring&gt;</span></span></div><div class="line"></div><div class="line"><span class="keyword">using</span> <span class="keyword">namespace</span> <span class="built_in">std</span>;</div><div class="line"></div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> N = <span class="number">310</span>;</div><div class="line"><span class="keyword">const</span> <span class="keyword">int</span> INF = <span class="number">0x3f3f3f3f</span>;</div><div class="line"></div><div class="line"><span class="keyword">int</span> table[N][N];    <span class="comment">// 权重矩阵（方阵）</span></div><div class="line"><span class="keyword">int</span> xl[N], yl[N];          <span class="comment">// 标号值</span></div><div class="line"><span class="keyword">int</span> xMatch[N], yMatch[N];  <span class="comment">// 点对应的匹配点</span></div><div class="line"><span class="keyword">bool</span> S[N], T[N];</div><div class="line"><span class="keyword">int</span> yPre[N], slackY[N];</div><div class="line"><span class="keyword">int</span> <span class="built_in">queue</span>[N];               <span class="comment">// 队列</span></div><div class="line"><span class="keyword">int</span> n;                      <span class="comment">// 矩阵维度</span></div><div class="line"></div><div class="line"></div><div class="line"><span class="function"><span class="keyword">void</span> <span class="title">bfs</span><span class="params">(<span class="keyword">int</span> startX)</span> </span>&#123;    <span class="comment">// 为一个x点寻找匹配</span></div><div class="line">	<span class="built_in">memset</span>(yPre, <span class="number">-1</span>, <span class="keyword">sizeof</span>(yPre));</div><div class="line">	<span class="built_in">memset</span>(S, <span class="number">0</span>, <span class="keyword">sizeof</span>(S));</div><div class="line">	<span class="built_in">memset</span>(T, <span class="number">0</span>, <span class="keyword">sizeof</span>(T));</div><div class="line">	<span class="built_in">memset</span>(T, <span class="number">0</span>, <span class="keyword">sizeof</span>(T));</div><div class="line">	<span class="built_in">memset</span>(slackY, INF, <span class="keyword">sizeof</span>(slackY));</div><div class="line"></div><div class="line">	<span class="keyword">bool</span> find = <span class="literal">false</span>;</div><div class="line">	<span class="keyword">int</span> endY = <span class="number">-1</span>;</div><div class="line">	<span class="keyword">int</span> qs = <span class="number">0</span>, qe = <span class="number">0</span>;           <span class="comment">// 队列开始结束索引</span></div><div class="line">	<span class="built_in">queue</span>[qe++] = startX;</div><div class="line">	<span class="keyword">while</span> (!find) &#123;       <span class="comment">// 循环直到找到匹配</span></div><div class="line">		<span class="keyword">while</span> (qs &lt; qe &amp;&amp; !find) &#123;   <span class="comment">// 队列不为空</span></div><div class="line">			<span class="keyword">int</span> x = <span class="built_in">queue</span>[qs++];</div><div class="line">			S[x] = <span class="literal">true</span>;</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++) &#123;</div><div class="line">				<span class="keyword">if</span> (T[y]) &#123;</div><div class="line">					<span class="keyword">continue</span>;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">int</span> tmp = xl[x] + yl[y] - table[x][y];</div><div class="line">				<span class="keyword">if</span> (tmp == <span class="number">0</span>) &#123;  <span class="comment">// 相等子树中的边</span></div><div class="line">					T[y] = <span class="literal">true</span>;</div><div class="line">					yPre[y] = x;</div><div class="line">					<span class="keyword">if</span> (yMatch[y] == <span class="number">-1</span>) &#123;</div><div class="line">						endY = y;</div><div class="line">						find = <span class="literal">true</span>;</div><div class="line">						<span class="keyword">break</span>;</div><div class="line">					&#125;</div><div class="line">					<span class="keyword">else</span> &#123;</div><div class="line">						<span class="built_in">queue</span>[qe++] = yMatch[y];</div><div class="line">					&#125;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">else</span> <span class="keyword">if</span> (slackY[y] &gt; tmp) &#123; <span class="comment">// 不在相等子树中的边，看是否能够更新松弛变量</span></div><div class="line">					slackY[y] = tmp;</div><div class="line">					yPre[y] = x;</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">if</span> (find) &#123;</div><div class="line">			<span class="keyword">break</span>;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">int</span> a = INF;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++) &#123;  <span class="comment">// 找到最小的松弛值</span></div><div class="line">			<span class="keyword">if</span> (!T[y] &amp;&amp; slackY[y] &lt; a) &#123;</div><div class="line">				a = slackY[y];</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++) &#123;  <span class="comment">// 根据a修改标号值</span></div><div class="line">			<span class="keyword">if</span> (S[i]) &#123;</div><div class="line">				xl[i] -= a;</div><div class="line">			&#125;</div><div class="line">			<span class="keyword">if</span> (T[i]) &#123;</div><div class="line">				yl[i] += a;</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line"></div><div class="line">		qs = qe = <span class="number">0</span>;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++) &#123;</div><div class="line">			<span class="keyword">if</span> (!T[y] &amp;&amp; slackY[y] == a) &#123;   <span class="comment">// 查看那些y点新加入到T集合，注意，这些y点的前向x点都记录在了yPre里面，所以这些x点不用再次入队</span></div><div class="line">				T[y] = <span class="literal">true</span>;</div><div class="line">				<span class="keyword">if</span> (yMatch[y] == <span class="number">-1</span>) &#123;   <span class="comment">// 新加入的y点没有匹配，那么就找到可扩路了</span></div><div class="line">					endY = y;</div><div class="line">					find = <span class="literal">true</span>;</div><div class="line">					<span class="keyword">break</span>;</div><div class="line">				&#125;</div><div class="line">				<span class="keyword">else</span> &#123;      <span class="comment">// 新加入的y点已经有匹配了，将它匹配的x加到队列</span></div><div class="line">					<span class="built_in">queue</span>[qe++] = yMatch[y];</div><div class="line">				&#125;</div><div class="line">			&#125;</div><div class="line">			slackY[y] -= a;   <span class="comment">// 所有松弛值减去a。(对于T集合中的松弛值已经没用了，对于不在T集合里面的y点，</span></div><div class="line">		&#125;                     <span class="comment">// 它们的松弛值是通过S集合中的x点求出的，S集合中的x点的标号值在上面都减去了a，所以这里松弛值也要减去a)</span></div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">while</span> (endY != <span class="number">-1</span>) &#123;    <span class="comment">// 找到可扩路最后的y点后，回溯并扩充</span></div><div class="line">		<span class="keyword">int</span> preX = yPre[endY], preY = xMatch[preX];</div><div class="line">		xMatch[preX] = endY;</div><div class="line">		yMatch[endY] = preX;</div><div class="line">		endY = preY;</div><div class="line">	&#125;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">solve</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="built_in">memset</span>(xMatch, <span class="number">-1</span>, <span class="keyword">sizeof</span>(xMatch));</div><div class="line">	<span class="built_in">memset</span>(yMatch, <span class="number">-1</span>, <span class="keyword">sizeof</span>(yMatch));</div><div class="line">	<span class="built_in">memset</span>(yl, <span class="number">0</span>, <span class="keyword">sizeof</span>(yl));</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++) &#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> y = <span class="number">0</span>; y &lt; n; y++) &#123;</div><div class="line">			<span class="keyword">if</span> (table[x][y] &gt; xl[x]) &#123;</div><div class="line">				xl[x] = table[x][y];</div><div class="line">			&#125;</div><div class="line">		&#125;</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++) &#123;</div><div class="line">		bfs(x);</div><div class="line">	&#125;</div><div class="line"></div><div class="line">	<span class="keyword">int</span> value = <span class="number">0</span>;</div><div class="line">	<span class="keyword">for</span> (<span class="keyword">int</span> x = <span class="number">0</span>; x &lt; n; x++) &#123;</div><div class="line">		value += table[x][xMatch[x]];</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> value;</div><div class="line">&#125;</div><div class="line"></div><div class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">()</span> </span>&#123;</div><div class="line">	<span class="keyword">while</span> (~<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;n)) &#123;</div><div class="line">		<span class="keyword">for</span> (<span class="keyword">int</span> i = <span class="number">0</span>; i &lt; n; i++)</div><div class="line">			<span class="keyword">for</span> (<span class="keyword">int</span> j = <span class="number">0</span>; j &lt; n; j++)</div><div class="line">				<span class="built_in">scanf</span>(<span class="string">"%d"</span>, &amp;table[i][j]);</div><div class="line">		<span class="keyword">int</span> ans = solve();</div><div class="line">		<span class="built_in">printf</span>(<span class="string">"%d\n"</span>, ans);</div><div class="line">	&#125;</div><div class="line">	<span class="keyword">return</span> <span class="number">0</span>;</div><div class="line">&#125;</div></pre></td></tr></table></figure>
+<p><strong>用时：</strong></p>
+<p><img src="/images/algorithm/奔小康赚大钱_2.png" alt="奔小康赚大钱" title="奔小康赚大钱"></p>
+<hr>
+<h2 id="3-Cyclic-Tour"><a href="#3-Cyclic-Tour" class="headerlink" title="3. Cyclic Tour"></a>3. Cyclic Tour</h2><p>这道题来自<a href="http://acm.hdu.edu.cn/showproblem.php?pid=1853" target="_blank" rel="external">HDU-1853</a></p>
+<p><img src="/images/algorithm/Cyclic_Tour_1.png" alt="Cyclic Tour" title="Cyclic Tour"></p>
+<p>每一个点需要经过一次仅一次，所有的点都是单向边，所以：</p>
+<ol>
+<li>每个点出入度都至少要大于1，否则不能形成环路。</li>
+<li>每个点的出入度都大于1，那么一定有环路。</li>
+<li>在最后的环游方案中，每个点被入度一次仅一次，出度一次仅一次。</li>
+</ol>
+<p>那么把所有点既放到X集合里面，又放到Y集合里面，然后这个偶图的最优匹配就是这个题目的解。</p>
+<p>代码从上面那份C++代码改一下就完成了。</p>
+<p><img src="/images/algorithm/Cyclic_Tour_2.png" alt="Cyclic Tour" title="Cyclic Tour"></p>
+<hr>
+<h1 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h1><ol>
+<li><strong>KM算法步骤比较简单，思想没那么简单，想写出一个好的代码更不简单。</strong></li>
+<li><strong>HDU对java不友好。</strong></li>
+</ol>
+<hr>
+<p>参考资料：</p>
+<p>《图论及其应用》-高等教育出版社-张先迪、李正良</p>
+<hr>
+
+      
+    </div>
+    
+    
+    
+	
+	
+	
+	  <div>
+		<div>
+    
+        <div style="text-align:center;color: #A6A6D2;font-size:16px;">
+		---------------------------------END---------------------------------</div>
+    
+</div>
+	  </div>
+	
+	
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/algorithm/" rel="tag"># algorithm</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/05/02/2018-05-02-2017_codecraft/" rel="next" title="2017年华为软件精英挑战赛记录">
+                <i class="fa fa-chevron-left"></i> 2017年华为软件精英挑战赛记录
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/05/10/2018-05-10-hwrj-2018/" rel="prev" title="2018华为软件精英挑战赛总结">
+                2018华为软件精英挑战赛总结 <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+        <!-- JiaThis Button BEGIN -->
+<div class="jiathis_style">
+<span class="jiathis_txt">分享到：</span>
+<a class="jiathis_button_fav">收藏夹</a>
+<a class="jiathis_button_copy">复制网址</a>
+<a class="jiathis_button_email">邮件</a>
+<a class="jiathis_button_weixin">微信</a>
+<a class="jiathis_button_qzone">QQ空间</a>
+<a class="jiathis_button_tqq">腾讯微薄</a>
+<a class="jiathis_button_douban">豆瓣</a>
+<a class="jiathis_button_share">一键分享</a>
+
+<a href="http://www.jiathis.com/share?uid=2140465" class="jiathis jiathis_txt jiathis_separator jtico jtico_jiathis" target="_blank">更多</a>
+<a class="jiathis_counter_style"></a>
+</div>
+<script type="text/javascript" >
+var jiathis_config={
+  data_track_clickback:true,
+  summary:"",
+  shortUrl:false,
+  hideMore:false
+}
+</script>
+<script type="text/javascript" src="http://v3.jiathis.com/code/jia.js?uid=" charset="utf-8"></script>
+<!-- JiaThis Button END -->
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+  <div class="comments" id="comments">
+    
+      <div id="disqus_thread">
+        <noscript>
+          Please enable JavaScript to view the
+          <a href="https://disqus.com/?ref_noscript">comments powered by Disqus.</a>
+        </noscript>
+      </div>
+    
+  </div>
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap" >
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+          <img class="site-author-image" itemprop="image"
+               src="/images/head/head_bigfan.png"
+               alt="龙" />
+          <p class="site-author-name" itemprop="name">龙</p>
+           
+              <p class="site-description motion-element" itemprop="description">哇咔咔</p>
+          
+        </div>
+        <nav class="site-state motion-element">
+
+          
+            <div class="site-state-item site-state-posts">
+            
+              <a href="/archives/">
+            
+                <span class="site-state-item-count">83</span>
+                <span class="site-state-item-name">日志</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-categories">
+              <a href="/categories/index.html">
+                <span class="site-state-item-count">28</span>
+                <span class="site-state-item-name">分类</span>
+              </a>
+            </div>
+          
+
+          
+            
+            
+            <div class="site-state-item site-state-tags">
+              <a href="/tags/index.html">
+                <span class="site-state-item-count">31</span>
+                <span class="site-state-item-name">标签</span>
+              </a>
+            </div>
+          
+
+        </nav>
+
+        
+          <div class="feed-link motion-element">
+            <a href="/atom.xml" rel="alternate">
+              <i class="fa fa-rss"></i>
+              RSS
+            </a>
+          </div>
+        
+
+        <div class="links-of-author motion-element">
+          
+        </div>
+
+        
+        
+
+        
+        
+
+        <!--插入一段网易云音乐-->
+        <!--iframe frameborder="no" border="0" marginwidth="0" marginheight="0" width=330 height=86 src="//music.163.com/outchain/player?type=2&id=33894145&auto=0&height=66"></iframe> -->
+
+        
+
+
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#偶图"><span class="nav-number">1.</span> <span class="nav-text">偶图</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#匹配"><span class="nav-number">2.</span> <span class="nav-text">匹配</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#匈牙利算法"><span class="nav-number">3.</span> <span class="nav-text">匈牙利算法</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#KM算法"><span class="nav-number">4.</span> <span class="nav-text">KM算法</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#可行顶点标号"><span class="nav-number">4.1.</span> <span class="nav-text">可行顶点标号</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相等子图"><span class="nav-number">4.2.</span> <span class="nav-text">相等子图</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#相关定理"><span class="nav-number">4.3.</span> <span class="nav-text">相关定理</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Kuhn-Munkres"><span class="nav-number">4.4.</span> <span class="nav-text">Kuhn-Munkres</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#例子实际操作"><span class="nav-number">4.5.</span> <span class="nav-text">例子实际操作</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KM算法复杂度"><span class="nav-number">4.6.</span> <span class="nav-text">KM算法复杂度</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#KM算法个人理解"><span class="nav-number">4.7.</span> <span class="nav-text">KM算法个人理解</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#代码"><span class="nav-number">5.</span> <span class="nav-text">代码</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#DFS版本"><span class="nav-number">5.1.</span> <span class="nav-text">DFS版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BFS版本"><span class="nav-number">5.2.</span> <span class="nav-text">BFS版本</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#代码解释"><span class="nav-number">5.3.</span> <span class="nav-text">代码解释</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BenchMark"><span class="nav-number">5.4.</span> <span class="nav-text">BenchMark</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#例题"><span class="nav-number">6.</span> <span class="nav-text">例题</span></a><ol class="nav-child"><li class="nav-item nav-level-2"><a class="nav-link" href="#1-Going-Home"><span class="nav-number">6.1.</span> <span class="nav-text">1. Going Home</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#2-奔小康赚大钱"><span class="nav-number">6.2.</span> <span class="nav-text">2. 奔小康赚大钱</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#3-Cyclic-Tour"><span class="nav-number">6.3.</span> <span class="nav-text">3. Cyclic Tour</span></a></li></ol></li><li class="nav-item nav-level-1"><a class="nav-link" href="#总结"><span class="nav-number">7.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright" >
+  
+  &copy;  2017 &mdash; 
+  <span itemprop="copyrightYear">2019</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">龙</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+  <span class="post-meta-divider">|</span>
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" href="https://github.com/iissnan/hexo-theme-next">NexT.Muse</a> v5.1.2</div>
+
+
+        
+
+
+
+
+  <script type="text/javascript">
+    (function() {
+      var hm = document.createElement("script");
+      hm.src = "//tajs.qq.com/stats?sId=63480382";
+      var s = document.getElementsByTagName("script")[0];
+      s.parentNode.insertBefore(hm, s);
+    })();
+  </script>
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+
+  
+  <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+
+  
+  <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+
+  
+  <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.2"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.2"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.2"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.2"></script>
+
+
+
+  
+
+
+  
+
+    
+      <script id="dsq-count-scr" src="https://long.disqus.com/count.js" async></script>
+    
+
+    
+      <script type="text/javascript">
+        var disqus_config = function () {
+          this.page.url = 'http://yoursite.com/2018/05/05/2018-05-05-KM/';
+          this.page.identifier = '2018/05/05/2018-05-05-KM/';
+          this.page.title = '匈牙利算法和KM算法';
+        };
+        var d = document, s = d.createElement('script');
+        s.src = 'https://long.disqus.com/embed.js';
+        s.setAttribute('data-timestamp', '' + +new Date());
+        (d.head || d.body).appendChild(s);
+      </script>
+    
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  
+
+  <script type="text/javascript">
+    // Popup Window;
+    var isfetched = false;
+    var isXml = true;
+    // Search DB path;
+    var search_path = "search.xml";
+    if (search_path.length === 0) {
+      search_path = "search.xml";
+    } else if (/json$/i.test(search_path)) {
+      isXml = false;
+    }
+    var path = "/" + search_path;
+    // monitor main search box;
+
+    var onPopupClose = function (e) {
+      $('.popup').hide();
+      $('#local-search-input').val('');
+      $('.search-result-list').remove();
+      $('#no-result').remove();
+      $(".local-search-pop-overlay").remove();
+      $('body').css('overflow', '');
+    }
+
+    function proceedsearch() {
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay"></div>')
+        .css('overflow', 'hidden');
+      $('.search-popup-overlay').click(onPopupClose);
+      $('.popup').toggle();
+      var $localSearchInput = $('#local-search-input');
+      $localSearchInput.attr("autocapitalize", "none");
+      $localSearchInput.attr("autocorrect", "off");
+      $localSearchInput.focus();
+    }
+
+    // search function;
+    var searchFunc = function(path, search_id, content_id) {
+      'use strict';
+
+      // start loading animation
+      $("body")
+        .append('<div class="search-popup-overlay local-search-pop-overlay">' +
+          '<div id="search-loading-icon">' +
+          '<i class="fa fa-spinner fa-pulse fa-5x fa-fw"></i>' +
+          '</div>' +
+          '</div>')
+        .css('overflow', 'hidden');
+      $("#search-loading-icon").css('margin', '20% auto 0 auto').css('text-align', 'center');
+
+      $.ajax({
+        url: path,
+        dataType: isXml ? "xml" : "json",
+        async: true,
+        success: function(res) {
+          // get the contents from search data
+          isfetched = true;
+          $('.popup').detach().appendTo('.header-inner');
+          var datas = isXml ? $("entry", res).map(function() {
+            return {
+              title: $("title", this).text(),
+              content: $("content",this).text(),
+              url: $("url" , this).text()
+            };
+          }).get() : res;
+          var input = document.getElementById(search_id);
+          var resultContent = document.getElementById(content_id);
+          var inputEventFunction = function() {
+            var searchText = input.value.trim().toLowerCase();
+            var keywords = searchText.split(/[\s\-]+/);
+            if (keywords.length > 1) {
+              keywords.push(searchText);
+            }
+            var resultItems = [];
+            if (searchText.length > 0) {
+              // perform local searching
+              datas.forEach(function(data) {
+                var isMatch = false;
+                var hitCount = 0;
+                var searchTextCount = 0;
+                var title = data.title.trim();
+                var titleInLowerCase = title.toLowerCase();
+                var content = data.content.trim().replace(/<[^>]+>/g,"");
+                var contentInLowerCase = content.toLowerCase();
+                var articleUrl = decodeURIComponent(data.url);
+                var indexOfTitle = [];
+                var indexOfContent = [];
+                // only match articles with not empty titles
+                if(title != '') {
+                  keywords.forEach(function(keyword) {
+                    function getIndexByWord(word, text, caseSensitive) {
+                      var wordLen = word.length;
+                      if (wordLen === 0) {
+                        return [];
+                      }
+                      var startPosition = 0, position = [], index = [];
+                      if (!caseSensitive) {
+                        text = text.toLowerCase();
+                        word = word.toLowerCase();
+                      }
+                      while ((position = text.indexOf(word, startPosition)) > -1) {
+                        index.push({position: position, word: word});
+                        startPosition = position + wordLen;
+                      }
+                      return index;
+                    }
+
+                    indexOfTitle = indexOfTitle.concat(getIndexByWord(keyword, titleInLowerCase, false));
+                    indexOfContent = indexOfContent.concat(getIndexByWord(keyword, contentInLowerCase, false));
+                  });
+                  if (indexOfTitle.length > 0 || indexOfContent.length > 0) {
+                    isMatch = true;
+                    hitCount = indexOfTitle.length + indexOfContent.length;
+                  }
+                }
+
+                // show search results
+
+                if (isMatch) {
+                  // sort index by position of keyword
+
+                  [indexOfTitle, indexOfContent].forEach(function (index) {
+                    index.sort(function (itemLeft, itemRight) {
+                      if (itemRight.position !== itemLeft.position) {
+                        return itemRight.position - itemLeft.position;
+                      } else {
+                        return itemLeft.word.length - itemRight.word.length;
+                      }
+                    });
+                  });
+
+                  // merge hits into slices
+
+                  function mergeIntoSlice(text, start, end, index) {
+                    var item = index[index.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    var hits = [];
+                    var searchTextCountInSlice = 0;
+                    while (position + word.length <= end && index.length != 0) {
+                      if (word === searchText) {
+                        searchTextCountInSlice++;
+                      }
+                      hits.push({position: position, length: word.length});
+                      var wordEnd = position + word.length;
+
+                      // move to next position of hit
+
+                      index.pop();
+                      while (index.length != 0) {
+                        item = index[index.length - 1];
+                        position = item.position;
+                        word = item.word;
+                        if (wordEnd > position) {
+                          index.pop();
+                        } else {
+                          break;
+                        }
+                      }
+                    }
+                    searchTextCount += searchTextCountInSlice;
+                    return {
+                      hits: hits,
+                      start: start,
+                      end: end,
+                      searchTextCount: searchTextCountInSlice
+                    };
+                  }
+
+                  var slicesOfTitle = [];
+                  if (indexOfTitle.length != 0) {
+                    slicesOfTitle.push(mergeIntoSlice(title, 0, title.length, indexOfTitle));
+                  }
+
+                  var slicesOfContent = [];
+                  while (indexOfContent.length != 0) {
+                    var item = indexOfContent[indexOfContent.length - 1];
+                    var position = item.position;
+                    var word = item.word;
+                    // cut out 100 characters
+                    var start = position - 20;
+                    var end = position + 80;
+                    if(start < 0){
+                      start = 0;
+                    }
+                    if (end < position + word.length) {
+                      end = position + word.length;
+                    }
+                    if(end > content.length){
+                      end = content.length;
+                    }
+                    slicesOfContent.push(mergeIntoSlice(content, start, end, indexOfContent));
+                  }
+
+                  // sort slices in content by search text's count and hits' count
+
+                  slicesOfContent.sort(function (sliceLeft, sliceRight) {
+                    if (sliceLeft.searchTextCount !== sliceRight.searchTextCount) {
+                      return sliceRight.searchTextCount - sliceLeft.searchTextCount;
+                    } else if (sliceLeft.hits.length !== sliceRight.hits.length) {
+                      return sliceRight.hits.length - sliceLeft.hits.length;
+                    } else {
+                      return sliceLeft.start - sliceRight.start;
+                    }
+                  });
+
+                  // select top N slices in content
+
+                  var upperBound = parseInt('1');
+                  if (upperBound >= 0) {
+                    slicesOfContent = slicesOfContent.slice(0, upperBound);
+                  }
+
+                  // highlight title and content
+
+                  function highlightKeyword(text, slice) {
+                    var result = '';
+                    var prevEnd = slice.start;
+                    slice.hits.forEach(function (hit) {
+                      result += text.substring(prevEnd, hit.position);
+                      var end = hit.position + hit.length;
+                      result += '<b class="search-keyword">' + text.substring(hit.position, end) + '</b>';
+                      prevEnd = end;
+                    });
+                    result += text.substring(prevEnd, slice.end);
+                    return result;
+                  }
+
+                  var resultItem = '';
+
+                  if (slicesOfTitle.length != 0) {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + highlightKeyword(title, slicesOfTitle[0]) + "</a>";
+                  } else {
+                    resultItem += "<li><a href='" + articleUrl + "' class='search-result-title'>" + title + "</a>";
+                  }
+
+                  slicesOfContent.forEach(function (slice) {
+                    resultItem += "<a href='" + articleUrl + "'>" +
+                      "<p class=\"search-result\">" + highlightKeyword(content, slice) +
+                      "...</p>" + "</a>";
+                  });
+
+                  resultItem += "</li>";
+                  resultItems.push({
+                    item: resultItem,
+                    searchTextCount: searchTextCount,
+                    hitCount: hitCount,
+                    id: resultItems.length
+                  });
+                }
+              })
+            };
+            if (keywords.length === 1 && keywords[0] === "") {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-search fa-5x" /></div>'
+            } else if (resultItems.length === 0) {
+              resultContent.innerHTML = '<div id="no-result"><i class="fa fa-frown-o fa-5x" /></div>'
+            } else {
+              resultItems.sort(function (resultLeft, resultRight) {
+                if (resultLeft.searchTextCount !== resultRight.searchTextCount) {
+                  return resultRight.searchTextCount - resultLeft.searchTextCount;
+                } else if (resultLeft.hitCount !== resultRight.hitCount) {
+                  return resultRight.hitCount - resultLeft.hitCount;
+                } else {
+                  return resultRight.id - resultLeft.id;
+                }
+              });
+              var searchResultList = '<ul class=\"search-result-list\">';
+              resultItems.forEach(function (result) {
+                searchResultList += result.item;
+              })
+              searchResultList += "</ul>";
+              resultContent.innerHTML = searchResultList;
+            }
+          }
+
+          if ('auto' === 'auto') {
+            input.addEventListener('input', inputEventFunction);
+          } else {
+            $('.search-icon').click(inputEventFunction);
+            input.addEventListener('keypress', function (event) {
+              if (event.keyCode === 13) {
+                inputEventFunction();
+              }
+            });
+          }
+
+          // remove loading animation
+          $(".local-search-pop-overlay").remove();
+          $('body').css('overflow', '');
+
+          proceedsearch();
+        }
+      });
+    }
+
+    // handle and trigger popup window;
+    $('.popup-trigger').click(function(e) {
+      e.stopPropagation();
+      if (isfetched === false) {
+        searchFunc(path, 'local-search-input', 'local-search-result');
+      } else {
+        proceedsearch();
+      };
+    });
+
+    $('.popup-btn-close').click(onPopupClose);
+    $('.popup').click(function(e){
+      e.stopPropagation();
+    });
+    $(document).on('keyup', function (event) {
+      var shouldDismissSearchPopup = event.which === 27 &&
+        $('.search-popup').is(':visible');
+      if (shouldDismissSearchPopup) {
+        onPopupClose();
+      }
+    });
+  </script>
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Config({
+        tex2jax: {
+          inlineMath: [ ['$','$'], ["\\(","\\)"]  ],
+          processEscapes: true,
+          skipTags: ['script', 'noscript', 'style', 'textarea', 'pre', 'code']
+        }
+      });
+    </script>
+
+    <script type="text/x-mathjax-config">
+      MathJax.Hub.Queue(function() {
+        var all = MathJax.Hub.getAllJax(), i;
+        for (i=0; i < all.length; i += 1) {
+          all[i].SourceElement().parentNode.className += ' has-jax';
+        }
+      });
+    </script>
+    <script type="text/javascript" src="//cdn.bootcss.com/mathjax/2.7.1/latest.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  
+
+
+  
+
+  
+
+
+  <script type="text/javascript" 
+  color="0,0,255" opacity='0.5' zIndex="-1" count="10"
+  src="//cdn.bootcss.com/canvas-nest.js/1.0.1/canvas-nest.min.js">
+  </script>
+
+</body>
+</html>
+
+<!-- 页面点击出现自由民主富强... -->
+<!-- <script type="text/javascript" src="/js/src/click_show_text.js"></script> -->
